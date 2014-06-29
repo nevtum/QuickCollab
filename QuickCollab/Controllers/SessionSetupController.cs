@@ -57,6 +57,14 @@ namespace QuickCollab.Controllers
 
             _sessionManager.AddSession(instance);
 
+            Connection conn = new Connection()
+            {
+                UserName = settings.UserName,
+                SessionName = settings.SessionName
+            };
+
+            _sessionManager.AddConnection(conn, instance);
+
             return RedirectToAction("Index", "SessionInstance", new { sessionId = instance.Name, password = settings.SessionPassword });
         }
     }
