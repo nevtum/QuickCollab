@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<header>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/jquery.signalR-2.0.0.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var chat = $.connection.contentHub;
+
+            var sendmessage = function () {
+
+                var message = $('#textInput').val();
+
+                if (message == "")
+                    return;
+
+                chat.server.broadcastMessage(message);
+                $('#textInput').val("");
+            }
+
+            chat.client.notifyBroadcasted = function (message) {
+                $('#list').prepend("<li>" + message + "</li>");
+            }
+
+            $('#textInput').keypress(function (e) {
+                if (e.which == 13) {
+                    sendmessage();
+                }
+            });
+
+            $('#buttonSubmit').click(sendmessage);
+
+            $.connection.hub.start();
+        });
+    </script>
+</header>
+<body>
+    @Html.ActionLink("Leave session", "SessionList")
+    <br/>
+    <input id="textInput" type="text" />
+    <button id="buttonSubmit">Click</button>
+    <ul id="list"></ul>
+</body>

@@ -1,0 +1,31 @@
+﻿@model QuickCollab.Models.SessionStartSettings
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Create new session</h2>
+
+@using (Html.BeginForm("CreateSession", "SessionSetup"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Session details</legend>
+        <span>Your Username:</span> @Html.TextBoxFor(m => m.UserName)<br />
+        <span>Session Name:</span> @Html.TextBoxFor(m => m.SessionName)<br />
+        <span>Visible in lobby:</span> @Html.CheckBoxFor(m => m.IsVisible)<br />
+
+        <span>Lock with password:</span> @Html.CheckBoxFor(m => m.WithPassword)<br />
+        <span>Password:</span> @Html.PasswordFor(m => m.SessionPassword)<br />
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to Start", "Index", "Home")
+</div>

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab", "QuickCollab\QuickCollab.csproj", "{944CD59A-B9AB-45B9-AE4F-105C09F529B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Security", "QuickCollab.Security\QuickCollab.Security.csproj", "{BBC9B49A-1D50-4F74-8524-7A3343B5D6F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Session", "QuickCollab.Session\QuickCollab.Session.csproj", "{1EF7950F-BAE1-479E-8660-E7547C3652CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{944CD59A-B9AB-45B9-AE4F-105C09F529B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{944CD59A-B9AB-45B9-AE4F-105C09F529B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{944CD59A-B9AB-45B9-AE4F-105C09F529B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{944CD59A-B9AB-45B9-AE4F-105C09F529B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBC9B49A-1D50-4F74-8524-7A3343B5D6F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBC9B49A-1D50-4F74-8524-7A3343B5D6F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBC9B49A-1D50-4F74-8524-7A3343B5D6F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBC9B49A-1D50-4F74-8524-7A3343B5D6F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF7950F-BAE1-479E-8660-E7547C3652CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF7950F-BAE1-479E-8660-E7547C3652CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF7950F-BAE1-479E-8660-E7547C3652CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF7950F-BAE1-479E-8660-E7547C3652CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
