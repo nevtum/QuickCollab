@@ -6,9 +6,9 @@ using System.Web;
 
 namespace QuickCollab.Models
 {
-    public class SessionStartSettings
+    public class StartSettingsViewModel
     {
-        public SessionStartSettings()
+        public StartSettingsViewModel()
         {
             IsVisible = true;
         }

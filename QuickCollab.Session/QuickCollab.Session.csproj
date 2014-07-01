@@ -50,6 +50,13 @@
     <Compile Include="SessionInstance.cs" />
     <Compile Include="SessionInstanceRepository.cs" />
     <Compile Include="Connection.cs" />
+    <Compile Include="RegistrationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuickCollab.Security\QuickCollab.Security.csproj">
+      <Project>{bbc9b49a-1d50-4f74-8524-7a3343b5d6f8}</Project>
+      <Name>QuickCollab.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

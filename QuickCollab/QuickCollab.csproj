@@ -132,7 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ContentHub.cs" />
-    <Compile Include="Models\SessionStartSettings.cs" />
+    <Compile Include="Models\StartSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,10 +162,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuickCollab.Security\QuickCollab.Security.csproj">
-      <Project>{bbc9b49a-1d50-4f74-8524-7a3343b5d6f8}</Project>
-      <Name>QuickCollab.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\QuickCollab.Session\QuickCollab.Session.csproj">
       <Project>{1ef7950f-bae1-479e-8660-e7547c3652ce}</Project>
       <Name>QuickCollab.Session</Name>

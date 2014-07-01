@@ -1,5 +1,4 @@
 ﻿using QuickCollab.Models;
-using QuickCollab.Security;
 using QuickCollab.Session;
 using System;
 using System.Collections.Generic;
@@ -11,61 +10,31 @@ namespace QuickCollab.Controllers
 {
     public class SessionSetupController : Controller
     {
-        private ISessionInstanceRepository _sessionManager;
+        private RegistrationService _service;
 
         public SessionSetupController()
         {
-            _sessionManager = new SessionInstanceRepository();
+            _service = new RegistrationService();
         }
-
-        // use constructor when dependency injection included
-        //public SessionSetupController(ISessionInstanceRepository repository)
-        //{
-        //    _sessionManager = repository;
-        //}
 
         public ActionResult Index()
         {
-            return View(new SessionStartSettings());
+            return View(new StartSettingsViewModel());
         }
 
-        public ActionResult CreateSession(SessionStartSettings settings)
+        public ActionResult CreateSession(StartSettingsViewModel vm)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("Index");
 
-            // Check that no duplicates currently exist
-            if (_sessionManager.SessionExists(settings.SessionName))
-                return View("Session name in use! Please try a different name!");
+            if (vm.WithPassword)
+                _service.StartNewSession(vm.SessionName, vm.IsVisible, vm.SessionPassword);
+            else
+                _service.StartNewSession(vm.SessionName, vm.IsVisible, string.Empty);
 
-            SessionInstance instance = new SessionInstance()
-            {
-                DateCreated = DateTime.Now,
-                Name = settings.SessionName,
-                IsVisible = settings.IsVisible,
-            };
+            _service.RegisterConnectionWithSession(vm.UserName, vm.SessionName);
 
-            if (settings.WithPassword)
-            {
-                PasswordHashService hasher = new PasswordHashService();
-                string salt = hasher.GetNewSalt();
-                string hashedPassword = hasher.SaltedPassword(settings.SessionPassword, salt);
-
-                instance.Salt = salt;
-                instance.HashedPassword = hashedPassword;
-            }
-
-            _sessionManager.AddSession(instance);
-
-            Connection conn = new Connection()
-            {
-                UserName = settings.UserName,
-                SessionName = settings.SessionName
-            };
-
-            _sessionManager.AddConnection(conn, instance);
-
-            return RedirectToAction("Index", "SessionInstance", new { sessionId = instance.Name, password = settings.SessionPassword });
+            return RedirectToAction("Index", "SessionInstance", new { sessionId = vm.SessionName, password = vm.SessionPassword });
         }
     }
 }

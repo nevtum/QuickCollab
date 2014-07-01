@@ -13,6 +13,6 @@ namespace QuickCollab.Session
         public string SessionName { get; set; }
 
         [BsonRequired]
-        public string UserName { get; set; }
+        public string ClientName { get; set; }
     }
 }

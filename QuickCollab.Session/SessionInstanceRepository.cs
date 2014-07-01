@@ -32,9 +32,9 @@ namespace QuickCollab.Session
                 .AsQueryable();
         }
 
-        public void AddConnection(Connection conn, SessionInstance session)
+        public void AddConnection(Connection conn)
         {
-            throw new NotImplementedException();
+            _connections.Insert(conn);
         }
 
         public void RemoveConnection(Connection conn, SessionInstance session)
