@@ -8,8 +8,9 @@ namespace QuickCollab.Session
     public interface ISessionInstanceRepository
     {
         IQueryable<Connection> GetConnectionsInSession(string sessionName);
-        void AddConnection(Connection conn);
-        void RemoveConnection(Connection conn, SessionInstance session);
+        IQueryable<Connection> GetConnectionsByUserName(string userName);
+        void RegisterConnection(string userName, string sessionName);
+        void UnRegisterConnection(Connection connection);
 
         IQueryable<SessionInstance> ListAllSessions();
         SessionInstance GetSession(string sessionName);

@@ -10,23 +10,45 @@ namespace QuickCollab.Hubs
 {
     public class ContentHub : Hub
     {
-        private ISessionInstanceRepository _sessionManager;
+        private ISessionInstanceRepository _repo;
 
         public ContentHub()
         {
-            _sessionManager = new SessionInstanceRepository();
+            _repo = new SessionInstanceRepository();
         }
 
         public void BroadcastMessage(string message)
         {
-            Clients.All.NotifyBroadcasted(message);
+            Clients.All.RecieveBroadcast(message);
+        }
+
+        [Authorize]
+        public void SendMessage(string sessionName, string message)
+        {
+            if (!Context.User.Identity.IsAuthenticated)
+                return;
+
+            if (!UserRegisteredWithSession(Context.User.Identity.Name, sessionName))
+                return;
+            
+            Clients.Group(sessionName).RecieveMessage(sessionName, message);
         }
 
         public override Task OnDisconnected()
         {
-            // Find connection and Remove from session
+            foreach (Connection conn in _repo.GetConnectionsByUserName(Context.User.Identity.Name))
+            {
+                _repo.UnRegisterConnection(conn);
+            }
 
             return base.OnDisconnected();
+        }
+
+        // perhaps an extension method?
+        private bool UserRegisteredWithSession(string userName, string sessionName)
+        {
+            return _repo.GetConnectionsInSession(sessionName)
+                .Any(conn => conn.ClientName == userName);
         }
     }
 }

@@ -16,15 +16,9 @@ namespace QuickCollab.Session
             _repo = new SessionInstanceRepository();
         }
 
-        public void RegisterConnectionWithSession(string clientName, string sessionName)
+        public void RegisterConnection(string clientName, string sessionName)
         {
-            Connection conn = new Connection()
-            {
-                ClientName = clientName,
-                SessionName = sessionName
-            };
-
-            _repo.AddConnection(conn);
+            _repo.RegisterConnection(clientName, sessionName);
         }
 
         public void StartNewSession(string sessionName, bool isVisible, string password)

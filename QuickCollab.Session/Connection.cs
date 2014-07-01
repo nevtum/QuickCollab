@@ -10,6 +10,9 @@ namespace QuickCollab.Session
     public class Connection
     {
         [BsonRequired]
+        public DateTime DateCreated { get; set; }
+
+        [BsonRequired]
         public string SessionName { get; set; }
 
         [BsonRequired]

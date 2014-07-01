@@ -32,14 +32,33 @@ namespace QuickCollab.Session
                 .AsQueryable();
         }
 
-        public void AddConnection(Connection conn)
+        public IQueryable<Connection> GetConnectionsByUserName(string userName)
         {
+            var query = Query<Connection>.EQ(c => c.ClientName, userName);
+
+            return _connections
+                .FindAs<Connection>(query)
+                .AsQueryable();
+        }
+
+        public void RegisterConnection(string userName, string sessionName)
+        {
+            Connection conn = new Connection()
+            {
+                DateCreated = DateTime.Now,
+                ClientName = userName,
+                SessionName = sessionName
+            };
+
             _connections.Insert(conn);
         }
 
-        public void RemoveConnection(Connection conn, SessionInstance session)
+        public void UnRegisterConnection(Connection connection)
         {
-            throw new NotImplementedException();
+            var query = Query.And(Query<Connection>.EQ(s => s.ClientName, connection.ClientName),
+                Query<Connection>.EQ(s => s.SessionName, connection.SessionName));
+
+            _connections.Remove(query);
         }
 
         public IQueryable<SessionInstance> ListAllSessions()

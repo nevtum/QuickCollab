@@ -23,7 +23,7 @@
                 $('#textInput').val("");
             }
 
-            chat.client.notifyBroadcasted = function (message) {
+            chat.client.recieveBroadcast = function (message) {
                 $('#list').prepend("<li>" + message + "</li>");
             }
 

@@ -32,7 +32,7 @@ namespace QuickCollab.Controllers
             else
                 _service.StartNewSession(vm.SessionName, vm.IsVisible, string.Empty);
 
-            _service.RegisterConnectionWithSession(vm.UserName, vm.SessionName);
+            _service.RegisterConnection(vm.UserName, vm.SessionName);
 
             return RedirectToAction("Index", "SessionInstance", new { sessionId = vm.SessionName, password = vm.SessionPassword });
         }
