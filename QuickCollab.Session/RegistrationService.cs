@@ -33,7 +33,7 @@ namespace QuickCollab.Session
                 IsVisible = isVisible,
             };
 
-            if (string.IsNullOrEmpty(password))
+            if (!string.IsNullOrEmpty(password))
             {
                 PasswordHashService hasher = new PasswordHashService();
                 string salt = hasher.GetNewSalt();

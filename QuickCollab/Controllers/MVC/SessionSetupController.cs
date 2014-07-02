@@ -27,10 +27,17 @@ namespace QuickCollab.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("Index");
 
-            if (vm.WithPassword)
-                _service.StartNewSession(vm.SessionName, vm.IsVisible, vm.SessionPassword);
-            else
-                _service.StartNewSession(vm.SessionName, vm.IsVisible, string.Empty);
+            try
+            {
+                if (vm.WithPassword)
+                    _service.StartNewSession(vm.SessionName, vm.IsVisible, vm.SessionPassword);
+                else
+                    _service.StartNewSession(vm.SessionName, vm.IsVisible, string.Empty);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Index");
+            }
 
             _service.RegisterConnection(vm.UserName, vm.SessionName);
 
