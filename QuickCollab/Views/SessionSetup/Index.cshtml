@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Index";
 }
-
 <h2>Create new session</h2>
 
 @using (Html.BeginForm("CreateSession", "SessionSetup"))
@@ -17,7 +16,7 @@
         <span>Session Name:</span> @Html.TextBoxFor(m => m.SessionName)<br />
         <span>Visible in lobby:</span> @Html.CheckBoxFor(m => m.IsVisible)<br />
 
-        <span>Lock with password:</span> @Html.CheckBoxFor(m => m.WithPassword)<br />
+        <span>Secured session:</span> @Html.CheckBoxFor(m => m.WithPassword)<br />
         <span>Password:</span> @Html.PasswordFor(m => m.SessionPassword)<br />
 
         <p>
@@ -27,5 +26,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to Start", "Index", "Home")
+    @Html.ActionLink("Cancel", "Index", "Home")
 </div>

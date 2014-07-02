@@ -124,10 +124,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Startup.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SessionInstanceController.cs" />
-    <Compile Include="Controllers\SessionListController.cs" />
-    <Compile Include="Controllers\SessionSetupController.cs" />
+    <Compile Include="Controllers\MVC\HomeController.cs" />
+    <Compile Include="Controllers\MVC\LobbyController.cs" />
+    <Compile Include="Controllers\MVC\SessionInstanceController.cs" />
+    <Compile Include="Controllers\Web Api\SessionListController.cs" />
+    <Compile Include="Controllers\MVC\SessionSetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -155,6 +156,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\SessionInstance\Index.cshtml" />
+    <Content Include="Views\Lobby\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
