@@ -29,10 +29,10 @@ namespace QuickCollab.Controllers
 
             try
             {
-                if (vm.WithPassword)
-                    _service.StartNewSession(vm.SessionName, vm.IsVisible, vm.SessionPassword);
+                if (vm.Secured)
+                    _service.StartNewSession(vm.SessionName, vm.Public, vm.SessionPassword, vm.PersistHistory);
                 else
-                    _service.StartNewSession(vm.SessionName, vm.IsVisible, string.Empty);
+                    _service.StartNewSession(vm.SessionName, vm.Public, string.Empty, vm.PersistHistory);
             }
             catch (Exception e)
             {

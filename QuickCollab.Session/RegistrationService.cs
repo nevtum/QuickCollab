@@ -64,7 +64,7 @@ namespace QuickCollab.Session
                 .Any(conn => conn.ClientName == userName);
         }
 
-        public void StartNewSession(string sessionName, bool isVisible, string password)
+        public void StartNewSession(string sessionName, bool isVisible, string password, bool persistHistory)
         {
             if (_repo.SessionExists(sessionName))
                 throw new Exception("Session name in use! Please try a different name!");
@@ -74,6 +74,7 @@ namespace QuickCollab.Session
                 DateCreated = DateTime.Now,
                 Name = sessionName,
                 IsVisible = isVisible,
+                PersistHistory = persistHistory
             };
 
             if (!string.IsNullOrEmpty(password))

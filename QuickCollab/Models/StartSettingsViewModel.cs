@@ -10,7 +10,7 @@ namespace QuickCollab.Models
     {
         public StartSettingsViewModel()
         {
-            IsVisible = true;
+            Public = true;
         }
 
         [Required(ErrorMessage="Please enter a username")]
@@ -21,9 +21,11 @@ namespace QuickCollab.Models
         [MaxLength(50)]
         public string SessionName { get; set; }
 
-        public bool IsVisible { get; set; }
+        public bool Public { get; set; }
 
-        public bool WithPassword { get; set; }
+        public bool PersistHistory { get; set; }
+
+        public bool Secured { get; set; }
 
         [MinLength(8)]
         public string SessionPassword { get; set; }

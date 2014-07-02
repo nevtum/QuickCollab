@@ -9,5 +9,6 @@ namespace QuickCollab.Models
     {
         public string SessionName { get; set; }
         public bool Secured { get; set; }
+        public bool PersistHistory { get; set; }
     }
 }

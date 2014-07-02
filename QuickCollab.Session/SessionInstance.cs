@@ -17,6 +17,9 @@ namespace QuickCollab.Session
         [BsonRequired]
         public bool IsVisible { get; set; }
 
+        [BsonRequired]
+        public bool PersistHistory { get; set; }
+
         public string HashedPassword { get; set; }
         
         public string Salt { get; set; }
