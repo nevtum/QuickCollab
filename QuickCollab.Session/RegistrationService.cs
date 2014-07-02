@@ -20,16 +20,14 @@ namespace QuickCollab.Session
 
         public void RegisterConnection(string clientName, string sessionName)
         {
-            if (UserRegisteredWithSession(clientName, sessionName))
-                return;
+            System.Diagnostics.Debug.Assert(!UserRegisteredWithSession(clientName, sessionName));
 
             _repo.RegisterConnection(clientName, sessionName);
         }
 
         public void UnRegisterConnection(string clientName, string sessionName)
         {
-            if (!UserRegisteredWithSession(clientName, sessionName))
-                return;
+            System.Diagnostics.Debug.Assert(UserRegisteredWithSession(clientName, sessionName));
 
             Connection conn = _repo
                 .GetConnectionsByUserName(clientName)
