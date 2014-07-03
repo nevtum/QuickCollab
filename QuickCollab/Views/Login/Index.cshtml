@@ -9,20 +9,25 @@
 <style>
     body {
         font-family: Calibri;
+        background-color: #d8e0f6;
+        color: #32817e;
     }
-    #container {
-        margin: 0 auto;
-        width: 600px;
-        background: #fff;
-    }
+
     #hero {
-        margin: 0 auto;
-        background-color: powderblue;
+        margin: 10px;
+        padding: 20px;
+        background-color: #ace6bc;
         height: 600px;
     }
+
     #login {
+        margin-top: 10px;
         margin: 0 auto;
-        border: thin;
+        padding: 7px;
+        border: solid;
+        border-width: thin;
+        border-color: black;
+        background-color: whitesmoke;
         width: 600px;
     }
 </style>
@@ -33,21 +38,21 @@
     <title>Index</title>
 </head>
 <body>
-        <div id="hero">
-            <h1>QuickCollab</h1>
-            <p>Collaborate with your peers in real time!</p>
-        </div>
-        <div id="login">
-            @using (Html.BeginForm("SignIn", "Login"))
-            {
-                @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter username" }) <br />
-                @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password" }) <br />
+    <div id="hero">
+        <h1>QuickCollab</h1>
+        <p>Welcome to QuickCollab. Your one stop shop to lightweight sessions and team collaboration!</p>
+    </div>
+    <div id="login">
+        @using (Html.BeginForm("SignIn", "Login"))
+        {
+            @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter username" }) <br />
+            @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password" }) <br />
 
-                <p>
-                    <input type="submit" value="Sign In" />
-                </p>
-            }
-            @Html.ActionLink("Create an account", "CreateAccount")
-        </div>
+            <p>
+                <input type="submit" value="Sign In" />
+            </p>
+        }
+        @Html.ActionLink("Create an account", "CreateAccount")
+    </div>
 </body>
 </html>
