@@ -8,6 +8,7 @@ using QuickCollab.Session;
 
 namespace QuickCollab.Hubs
 {
+    [Authorize]
     public class ContentHub : Hub
     {
         private RegistrationService _registrationService;

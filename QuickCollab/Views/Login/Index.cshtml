@@ -1,0 +1,53 @@
+﻿@model QuickCollab.Models.MemberLoginDetails
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<style>
+    body {
+        font-family: Calibri;
+    }
+    #container {
+        margin: 0 auto;
+        width: 600px;
+        background: #fff;
+    }
+    #hero {
+        margin: 0 auto;
+        background-color: powderblue;
+        height: 600px;
+    }
+    #login {
+        margin: 0 auto;
+        border: thin;
+        width: 600px;
+    }
+</style>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+        <div id="hero">
+            <h1>QuickCollab</h1>
+            <p>Collaborate with your peers in real time!</p>
+        </div>
+        <div id="login">
+            @using (Html.BeginForm("SignIn", "Login"))
+            {
+                @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter username" }) <br />
+                @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password" }) <br />
+
+                <p>
+                    <input type="submit" value="Sign In" />
+                </p>
+            }
+            @Html.ActionLink("Create an account", "CreateAccount")
+        </div>
+</body>
+</html>

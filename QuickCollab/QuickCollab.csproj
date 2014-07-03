@@ -126,6 +126,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
     <Compile Include="Controllers\MVC\LobbyController.cs" />
+    <Compile Include="Controllers\MVC\LoginController.cs" />
     <Compile Include="Controllers\MVC\SessionInstanceController.cs" />
     <Compile Include="Controllers\Web Api\SessionListController.cs" />
     <Compile Include="Controllers\MVC\SessionSetupController.cs" />
@@ -133,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ContentHub.cs" />
+    <Compile Include="Models\MemberLoginDetails.cs" />
     <Compile Include="Models\SessionViewModel.cs" />
     <Compile Include="Models\StartSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,6 +159,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\SessionInstance\Index.cshtml" />
     <Content Include="Views\Lobby\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

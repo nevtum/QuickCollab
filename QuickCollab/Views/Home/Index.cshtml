@@ -2,6 +2,12 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    body {
+        font-family: Calibri;
+    }
+</style>
+
 <h2>QuickCollab</h2>
 
 <p>Welcome to QuickCollab. Your one stop shop to lightweight sessions and team collaboration.</p>
@@ -9,3 +15,6 @@
 @Html.ActionLink("Create new session", "Index", "SessionSetup")
 <br />
 @Html.ActionLink("Go to lobby", "Index", "Lobby")
+<br />
+<br />
+@Html.ActionLink("Log Out", "LogOut")
