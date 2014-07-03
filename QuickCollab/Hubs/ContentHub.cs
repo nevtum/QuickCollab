@@ -20,7 +20,7 @@ namespace QuickCollab.Hubs
 
         public Task BroadcastMessage(string message)
         {
-            string content = string.Format("[{0}]: {1}", DateTime.Now, message);
+            string content = string.Format("[{0}]: {1}", Context.User.Identity.Name, message);
 
             return Clients.All.RecieveBroadcast(content);
         }
