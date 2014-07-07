@@ -18,15 +18,16 @@ namespace QuickCollab.Controllers
             _service = new RegistrationService();
         }
 
-        public ActionResult Index()
+        public ActionResult CreateSession()
         {
-            return View(new StartSettingsViewModel());
+            return View();
         }
 
+        [HttpPost]
         public ActionResult CreateSession(StartSettingsViewModel vm)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Index");
+                return View(vm);
 
             try
             {
@@ -37,7 +38,7 @@ namespace QuickCollab.Controllers
             }
             catch (Exception e)
             {
-                return RedirectToAction("Index");
+                return View(vm);
             }
 
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];

@@ -159,7 +159,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\SessionInstance\Index.cshtml" />
     <Content Include="Views\Lobby\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\SignIn.cshtml" />
     <Content Include="Views\Login\CreateAccount.cshtml" />
     <Content Include="Views\Login\AccountCreated.cshtml" />
   </ItemGroup>
@@ -184,7 +184,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SessionSetup\Index.cshtml" />
+    <Content Include="Views\SessionSetup\CreateSession.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

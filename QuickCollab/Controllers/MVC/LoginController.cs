@@ -22,15 +22,16 @@ namespace QuickCollab.Controllers.MVC
             _hasher = new PasswordHashService();
         }
 
-        public ActionResult Index()
+        public ActionResult SignIn()
         {
             return View();
         }
 
+        [HttpPost]
         public ActionResult SignIn(MemberLoginDetails details)
         {
-            if(!ModelState.IsValid)
-                return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View(details);
 
             Account account = _accountsDB.GetAccountByUsername(details.UserName);
 
@@ -51,17 +52,23 @@ namespace QuickCollab.Controllers.MVC
         }
 
         [HttpPost]
-        public ActionResult CreateAccount(Account account)
+        public ActionResult CreateAccount(MemberLoginDetails details)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("CreateAccount");
 
-            if (_accountsDB.AccountExists(account.UserName))
+            if (_accountsDB.AccountExists(details.UserName))
                 return RedirectToAction("CreateAccount");
 
-            account.DateCreated = DateTime.Now;
-            account.Salt = _hasher.GetNewSalt();
-            account.Password = _hasher.SaltedPassword(account.Password, account.Salt);
+            string salt = _hasher.GetNewSalt();
+
+            Account account = new Account()
+            {
+                DateCreated = DateTime.Now,
+                UserName = details.UserName,
+                Password = _hasher.SaltedPassword(details.Password, salt),
+                Salt = salt
+            };
 
             _accountsDB.AddAccount(account);
 
