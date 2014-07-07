@@ -13,10 +13,6 @@ namespace QuickCollab.Models
             Public = true;
         }
 
-        [Required(ErrorMessage="Please enter a username")]
-        [MaxLength(40)]
-        public string UserName { get; set; }
-
         [Required(ErrorMessage="Please enter a session name")]
         [MaxLength(50)]
         public string SessionName { get; set; }

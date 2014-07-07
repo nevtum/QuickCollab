@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace QuickCollab.Controllers
 {
@@ -39,9 +40,12 @@ namespace QuickCollab.Controllers
                 return RedirectToAction("Index");
             }
 
-            _service.RegisterConnection(vm.UserName, vm.SessionName);
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
 
-            return RedirectToAction("Index", "SessionInstance", new { sessionId = vm.SessionName, password = vm.SessionPassword });
+            _service.RegisterConnection(ticket.Name, vm.SessionName);
+
+            return RedirectToAction("Index", "SessionInstance", new { sessionId = vm.SessionName });
         }
     }
 }
