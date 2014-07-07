@@ -160,6 +160,8 @@
     <Content Include="Views\SessionInstance\Index.cshtml" />
     <Content Include="Views\Lobby\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\CreateAccount.cshtml" />
+    <Content Include="Views\Login\AccountCreated.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -168,6 +170,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickCollab.Accounts\QuickCollab.Accounts.csproj">
+      <Project>{25ece1b3-f150-4e0b-b87d-fe6870e5d5d2}</Project>
+      <Name>QuickCollab.Accounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QuickCollab.Security\QuickCollab.Security.csproj">
+      <Project>{bbc9b49a-1d50-4f74-8524-7a3343b5d6f8}</Project>
+      <Name>QuickCollab.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QuickCollab.Session\QuickCollab.Session.csproj">
       <Project>{1ef7950f-bae1-479e-8660-e7547c3652ce}</Project>
       <Name>QuickCollab.Session</Name>
