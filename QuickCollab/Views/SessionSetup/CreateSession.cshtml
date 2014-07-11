@@ -9,7 +9,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
     <fieldset>
         <legend>Session details</legend>
         <span>Session Name:</span> @Html.TextBoxFor(m => m.SessionName)<br />
@@ -17,10 +16,7 @@
         <span>Save session history:</span> @Html.CheckBoxFor(m => m.PersistHistory)<br />
         <span>Secured session:</span> @Html.CheckBoxFor(m => m.Secured)<br />
         <span>Password:</span> @Html.PasswordFor(m => m.SessionPassword)<br />
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
+        <input type="submit" value="Create" />
     </fieldset>
 }
 

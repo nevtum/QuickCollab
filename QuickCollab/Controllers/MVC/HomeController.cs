@@ -22,7 +22,7 @@ namespace QuickCollab.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("SignIn", "Login");
         }
     }
 }

@@ -45,12 +45,8 @@
     <div id="login">
         @using (Html.BeginForm("SignIn", "Login"))
         {
-            @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter username" }) <br />
-            @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password" }) <br />
-
-            <p>
-                <input type="submit" value="Sign In" />
-            </p>
+            @Html.EditorForModel()
+            <input type="submit" value="Sign In" />
         }
         @Html.ActionLink("Create an account", "CreateAccount")
     </div>

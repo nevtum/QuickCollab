@@ -9,15 +9,11 @@
 <div id="create">
     @using (Html.BeginForm("CreateAccount", "Login"))
     {
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter username" }) <br />
-        
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password" }) <br />
-
-        <p>
-            <input type="submit" value="Create Account" />
-        </p>
+        @Html.TextBoxFor(m => m.UserName, new { placeholder = "Enter a username" })
+        <br/>
+        @Html.PasswordFor(m => m.Password, new { placeholder = "Enter a password" })
+        <br/>
+        <input type="submit" value="Create Account" />
     }
     @Html.ActionLink("Cancel", "SignIn")
 </div>
