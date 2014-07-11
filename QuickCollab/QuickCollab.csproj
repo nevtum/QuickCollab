@@ -129,7 +129,6 @@
     <Compile Include="Controllers\MVC\LoginController.cs" />
     <Compile Include="Controllers\MVC\SessionInstanceController.cs" />
     <Compile Include="Controllers\Web Api\SessionListController.cs" />
-    <Compile Include="Controllers\MVC\SessionSetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,7 +183,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SessionSetup\CreateSession.cshtml" />
+    <Content Include="Views\Lobby\CreateSession.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

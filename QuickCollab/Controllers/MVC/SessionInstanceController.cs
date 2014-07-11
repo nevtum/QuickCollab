@@ -13,7 +13,6 @@ namespace QuickCollab.Controllers
         //
         // GET: /SessionInstance/
 
-        // Not a good idea since password is visible in url
         public ActionResult Index(string sessionId)
         {
             // Note: parameter to method can only be simple types.
