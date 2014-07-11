@@ -1,6 +1,39 @@
-﻿@{
+﻿@model IEnumerable<QuickCollab.Session.SessionInstance>
+
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Lobby</h2>
+<style>
+    body {
+        font-family: Calibri;
+    }
+</style>
+
+<h2>QuickCollab Lobby</h2>
+
+@Html.ActionLink("Create new session", "CreateSession", "SessionSetup")
+<table>
+    <thead>
+        <tr>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Store history</th>
+            <th>Secured</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.OrderByDescending(s => s.DateCreated))
+        {
+            <tr>
+                <td>@x.DateCreated</td>
+                <td>@x.Name</td>
+                <td>@x.PersistHistory</td>
+                <td>@(!string.IsNullOrEmpty(x.HashedPassword))</td>
+                <td>@Html.ActionLink("Join", "JoinSession", new { sessionId = x.Name })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 @Html.ActionLink("Exit Lobby", "Index", "Home")

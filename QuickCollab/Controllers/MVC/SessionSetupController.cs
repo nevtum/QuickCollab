@@ -46,7 +46,7 @@ namespace QuickCollab.Controllers
 
             _service.RegisterConnection(ticket.Name, vm.SessionName);
 
-            return RedirectToAction("Index", "SessionInstance", new { sessionId = vm.SessionName });
+            return RedirectToAction("Index", "Lobby");
         }
     }
 }
