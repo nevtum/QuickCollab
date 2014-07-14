@@ -28,12 +28,27 @@ namespace QuickCollab.Controllers.MVC
         public ActionResult JoinSession(string sessionId)
         {
             // check if room is secured
-            // check if user already allowed in secured room
-            // present view to fill in details
+            if (string.IsNullOrEmpty(_repo.GetSession(sessionId).HashedPassword))
+            {
+                _service.RegisterConnection(User.Identity.Name, sessionId);
+                return RedirectToAction("Index", "SessionInstance", new { SessionId = sessionId });
+            }
 
-            return RedirectToAction("Index", "SessionInstance", new { SessionId = sessionId });
+            // present view to fill in details
+            return RedirectToAction("JoinSecured", new { sessionId = sessionId });
         }
 
+        public ActionResult JoinSecured(string sessionId)
+        {
+            return View(sessionId);
+        }
+
+        public ActionResult JoinSecured(string sessionId, string password)
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult CreateSession()
         {
             return View();
