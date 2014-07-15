@@ -6,7 +6,7 @@
 
 <h2>Create new session</h2>
 
-@using (Html.BeginForm("CreateSession", "SessionSetup"))
+@using (Html.BeginForm("CreateSession"))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

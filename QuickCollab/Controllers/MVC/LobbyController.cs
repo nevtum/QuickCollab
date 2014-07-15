@@ -48,7 +48,6 @@ namespace QuickCollab.Controllers.MVC
             return View();
         }
 
-        [HttpPost]
         public ActionResult CreateSession()
         {
             return View();
