@@ -36,50 +36,42 @@ namespace QuickCollab.Hubs
             });
         }
 
-        public Task JoinSession(string sessionName, string password = "")
+        public void JoinSession(string sessionName)
         {
-            return new Task(() =>
-            {
-                if (!Context.User.Identity.IsAuthenticated)
-                    return;
+            string clientName = Context.User.Identity.Name;
 
-                if (!_registrationService.ValidatePassword(sessionName, password))
-                    return;
+            if (!_registrationService.UserRegisteredWithSession(clientName, sessionName))
+                return;
 
-                _registrationService.RegisterConnection(Context.ConnectionId, sessionName);
-
-                Groups.Add(Context.ConnectionId, sessionName);
-
-                Clients.Group(sessionName)
-                    .RecieveMessage(sessionName, string.Format("{0} has joined session.", Context.User.Identity));
-            });
+            Groups.Add(Context.ConnectionId, sessionName);
+            Clients.OthersInGroup(sessionName).RecieveMessage(string.Format("{0} has joined session.", clientName));
         }
 
-        public Task LeaveSession(string sessionName)
+        public void LeaveSession(string sessionName)
         {
-            return new Task(() =>
-            {
-                if (!_registrationService.UserRegisteredWithSession(Context.ConnectionId, sessionName))
-                    return;
+            string clientName = Context.User.Identity.Name;
 
-                _registrationService.UnRegisterConnection(Context.ConnectionId, sessionName);
+            if (!_registrationService.UserRegisteredWithSession(clientName, sessionName))
+                return;
 
-                Groups.Remove(Context.ConnectionId, sessionName);
+            Groups.Remove(Context.ConnectionId, sessionName);
+            Clients.OthersInGroup(sessionName).RecieveMessage(string.Format("{0} has left session.", clientName));
+        }
 
-                Clients.Group(sessionName)
-                    .RecieveMessage(sessionName, string.Format("{0} has left session.", Context.User.Identity));
-            });
+        public override Task OnConnected()
+        {
+            // for testing only
+            JoinSession("Open Session");
+
+            return base.OnConnected();
         }
 
         public override Task OnDisconnected()
         {
-            return new Task(() =>
-            {
-                foreach (string sessionName in _registrationService.CurrentSessions(Context.ConnectionId))
-                {
-                    LeaveSession(sessionName);
-                }
-            });
+            // for testing only
+            LeaveSession("Open Session");
+
+            return base.OnDisconnected();
         }
     }
 }

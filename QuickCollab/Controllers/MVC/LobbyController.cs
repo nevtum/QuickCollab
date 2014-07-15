@@ -30,7 +30,10 @@ namespace QuickCollab.Controllers.MVC
             // check if room is secured
             if (string.IsNullOrEmpty(_repo.GetSession(sessionId).HashedPassword))
             {
-                _service.RegisterConnection(User.Identity.Name, sessionId);
+                // To do. Expiry of user registered with session.
+                if (!_service.UserRegisteredWithSession(User.Identity.Name, sessionId))
+                    _service.RegisterConnection(User.Identity.Name, sessionId);
+
                 return RedirectToAction("Index", "SessionInstance", new { SessionId = sessionId });
             }
 
@@ -70,11 +73,6 @@ namespace QuickCollab.Controllers.MVC
             {
                 return View(vm);
             }
-
-            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
-
-            _service.RegisterConnection(ticket.Name, vm.SessionName);
 
             return RedirectToAction("Index");
         }

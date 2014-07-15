@@ -27,6 +27,10 @@
                 $('#list').prepend("<li>" + message + "</li>");
             }
 
+            chat.client.recieveMessage = function (message) {
+                $('#list').prepend("<li>" + message + "</li>");
+            }
+
             $('#textInput').keypress(function (e) {
                 if (e.which == 13) {
                     sendmessage();
