@@ -9,12 +9,14 @@ namespace QuickCollab.Session
 {
     public class RegistrationService
     {
-        private ISessionInstanceRepository _repo;
+        private ISessionInstanceRepository _sessionRepo;
+        private IConnectionRepository _connRepo;
         private PasswordHashService _passwordService;
 
         public RegistrationService()
         {
-            _repo = new SessionInstanceRepository();
+            _sessionRepo = new SessionInstanceRepository();
+            _connRepo = new ConnectionRepository();
             _passwordService = new PasswordHashService();
         }
 
@@ -22,29 +24,31 @@ namespace QuickCollab.Session
         {
             System.Diagnostics.Debug.Assert(!UserRegisteredWithSession(clientName, sessionName));
 
-            _repo.RegisterConnection(clientName, sessionName);
+            SessionInstance instance = _sessionRepo.GetSession(sessionName);
+
+            _connRepo.RegisterConnection(clientName, instance);
         }
 
-        public void UnRegisterConnection(string clientName, string sessionName)
-        {
-            System.Diagnostics.Debug.Assert(UserRegisteredWithSession(clientName, sessionName));
+        //public void UnRegisterConnection(string clientName, string sessionName)
+        //{
+        //    System.Diagnostics.Debug.Assert(UserRegisteredWithSession(clientName, sessionName));
 
-            Connection conn = _repo
-                .GetConnectionsByUserName(clientName)
-                .Single(c => c.SessionName == sessionName);
+        //    Connection conn = _repo
+        //        .GetActiveConnectionsByUserName(clientName)
+        //        .Single(c => c.SessionName == sessionName);
 
-            _repo.UnRegisterConnection(conn);
-        }
+        //    _repo.UnRegisterConnection(conn);
+        //}
 
         public IEnumerable<string> CurrentSessions(string clientName)
         {
-            return _repo.GetConnectionsByUserName(clientName)
+            return _connRepo.GetActiveConnectionsByUserName(clientName)
                 .Select(c => c.SessionName);
         }
 
         public bool ValidatePassword(string sessionName, string password)
         {
-            SessionInstance s = _repo.GetSession(sessionName);
+            SessionInstance s = _sessionRepo.GetSession(sessionName);
 
             // No password required
             if (string.IsNullOrEmpty(s.HashedPassword))
@@ -58,13 +62,13 @@ namespace QuickCollab.Session
 
         public bool UserRegisteredWithSession(string userName, string sessionName)
         {
-            return _repo.GetConnectionsInSession(sessionName)
+            return _connRepo.GetActiveConnectionsInSession(sessionName)
                 .Any(conn => conn.ClientName == userName);
         }
 
-        public void StartNewSession(string sessionName, bool isVisible, string password, bool persistHistory)
+        public void StartNewSession(string sessionName, bool isVisible, string password, bool persistHistory, int connectionExpiryHours)
         {
-            if (_repo.SessionExists(sessionName))
+            if (_sessionRepo.SessionExists(sessionName))
                 throw new Exception("Session name in use! Please try a different name!");
 
             SessionInstance instance = new SessionInstance()
@@ -72,7 +76,8 @@ namespace QuickCollab.Session
                 DateCreated = DateTime.Now,
                 Name = sessionName,
                 IsVisible = isVisible,
-                PersistHistory = persistHistory
+                PersistHistory = persistHistory,
+                ConnectionExpiryInHours = connectionExpiryHours
             };
 
             if (!string.IsNullOrEmpty(password))
@@ -84,7 +89,7 @@ namespace QuickCollab.Session
                 instance.HashedPassword = hashedPassword;
             }
 
-            _repo.AddSession(instance);
+            _sessionRepo.AddSession(instance);
         }
     }
 }

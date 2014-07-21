@@ -16,6 +16,9 @@ namespace QuickCollab.Session
         public DateTime DateCreated { get; set; }
 
         [BsonRequired]
+        public DateTime Expiration { get; set; }
+
+        [BsonRequired]
         public string SessionName { get; set; }
 
         [BsonRequired]

@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionRepository.cs" />
+    <Compile Include="IConnectionRepository.cs" />
     <Compile Include="ISessionInstanceRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionInstance.cs" />

@@ -11,7 +11,6 @@ namespace QuickCollab.Session
     {
         private MongoDatabase _dbContext;
         private MongoCollection _sessions;
-        private MongoCollection _connections;
 
         public SessionInstanceRepository()
         {
@@ -20,45 +19,6 @@ namespace QuickCollab.Session
                 .GetDatabase("QuickCollab");
 
             _sessions = _dbContext.GetCollection<SessionInstance>("Sessions");
-            _connections = _dbContext.GetCollection<Connection>("Connections");
-        }
-
-        public IQueryable<Connection> GetConnectionsInSession(string sessionName)
-        {
-            var query = Query<Connection>.EQ(c => c.SessionName, sessionName);
-
-            return _connections
-                .FindAs<Connection>(query)
-                .AsQueryable();
-        }
-
-        public IQueryable<Connection> GetConnectionsByUserName(string userName)
-        {
-            var query = Query<Connection>.EQ(c => c.ClientName, userName);
-
-            return _connections
-                .FindAs<Connection>(query)
-                .AsQueryable();
-        }
-
-        public void RegisterConnection(string userName, string sessionName)
-        {
-            Connection conn = new Connection()
-            {
-                DateCreated = DateTime.Now,
-                ClientName = userName,
-                SessionName = sessionName
-            };
-
-            _connections.Insert(conn);
-        }
-
-        public void UnRegisterConnection(Connection connection)
-        {
-            var query = Query.And(Query<Connection>.EQ(s => s.ClientName, connection.ClientName),
-                Query<Connection>.EQ(s => s.SessionName, connection.SessionName));
-
-            _connections.Remove(query);
         }
 
         public IQueryable<SessionInstance> ListAllSessions()

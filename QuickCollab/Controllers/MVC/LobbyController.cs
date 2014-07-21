@@ -65,9 +65,9 @@ namespace QuickCollab.Controllers.MVC
             try
             {
                 if (vm.Secured)
-                    _service.StartNewSession(vm.SessionName, vm.Public, vm.SessionPassword, vm.PersistHistory);
+                    _service.StartNewSession(vm.SessionName, vm.Public, vm.SessionPassword, vm.PersistHistory, vm.ConnectionExpiryInHours);
                 else
-                    _service.StartNewSession(vm.SessionName, vm.Public, string.Empty, vm.PersistHistory);
+                    _service.StartNewSession(vm.SessionName, vm.Public, string.Empty, vm.PersistHistory, vm.ConnectionExpiryInHours);
             }
             catch (Exception e)
             {

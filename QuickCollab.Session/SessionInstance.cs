@@ -13,6 +13,9 @@ namespace QuickCollab.Session
 
         [BsonRequired]
         public DateTime DateCreated { get; set; }
+
+        [BsonRequired]
+        public int ConnectionExpiryInHours { get; set; }
         
         [BsonRequired]
         public bool IsVisible { get; set; }
