@@ -1,5 +1,4 @@
-﻿using QuickCollab.Commands;
-using QuickCollab.Models;
+﻿using QuickCollab.Models;
 using QuickCollab.Security;
 using QuickCollab.Session;
 using System;
@@ -11,7 +10,7 @@ using System.Web.Http;
 
 namespace QuickCollab.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class SessionListController : ApiController
     {
         ISessionInstanceRepository _repo;
@@ -41,12 +40,9 @@ namespace QuickCollab.Controllers
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);
         }
 
-        public HttpResponseMessage Post(JoinSecuredSessionCommand command)
+        public HttpResponseMessage Post(string id, string password)
         {
-            if (command.UserName != User.Identity.Name)
-                return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Attempting to register different user to logged in user!"));
-
-            SessionInstance instance = _repo.GetSession(command.SessionId);
+            SessionInstance instance = _repo.GetSession(id);
 
             if (instance == null)
                 return Request.CreateResponse(System.Net.HttpStatusCode.NotFound);
@@ -56,11 +52,11 @@ namespace QuickCollab.Controllers
 
             System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(instance.Salt));
 
-            if (_hashService.SaltedPassword(command.Password, instance.Salt) != instance.HashedPassword)
+            if (_hashService.SaltedPassword(password, instance.Salt) != instance.HashedPassword)
                 return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Incorrect password!"));
 
-            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, command.SessionId))
-                _registrationService.RegisterConnection(User.Identity.Name, command.SessionId);
+            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, id))
+                _registrationService.RegisterConnection(User.Identity.Name, id);
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
