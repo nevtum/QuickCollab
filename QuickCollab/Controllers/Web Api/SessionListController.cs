@@ -1,4 +1,6 @@
-﻿using QuickCollab.Models;
+﻿using QuickCollab.Commands;
+using QuickCollab.Models;
+using QuickCollab.Security;
 using QuickCollab.Session;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,14 @@ namespace QuickCollab.Controllers
     public class SessionListController : ApiController
     {
         ISessionInstanceRepository _repo;
+        RegistrationService _registrationService;
+        PasswordHashService _hashService;
 
         public SessionListController()
         {
             _repo = new SessionInstanceRepository();
+            _registrationService = new RegistrationService();
+            _hashService = new PasswordHashService();
         }
 
         public HttpResponseMessage GetSessions()
@@ -33,6 +39,30 @@ namespace QuickCollab.Controllers
                 });
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);
+        }
+
+        public HttpResponseMessage Post(JoinSecuredSessionCommand command)
+        {
+            if (command.UserName != User.Identity.Name)
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Attempting to register different user to logged in user!"));
+
+            SessionInstance instance = _repo.GetSession(command.SessionId);
+
+            if (instance == null)
+                return Request.CreateResponse(System.Net.HttpStatusCode.NotFound);
+
+            if (string.IsNullOrEmpty(instance.HashedPassword))
+                return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Room is not secured! Incorrect post type"));
+
+            System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(instance.Salt));
+
+            if (_hashService.SaltedPassword(command.Password, instance.Salt) != instance.HashedPassword)
+                return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Incorrect password!"));
+
+            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, command.SessionId))
+                _registrationService.RegisterConnection(User.Identity.Name, command.SessionId);
+
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
     }
 }
