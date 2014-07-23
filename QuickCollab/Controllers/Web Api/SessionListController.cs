@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace QuickCollab.Controllers
 {
+    [Authorize]
     public class SessionListController : ApiController
     {
         ISessionInstanceRepository _repo;
@@ -25,7 +26,10 @@ namespace QuickCollab.Controllers
                 .Select(s => new SessionViewModel()
                 {
                     SessionName = s.Name,
-                    Secured = !string.IsNullOrEmpty(s.HashedPassword)
+                    Secured = !string.IsNullOrEmpty(s.HashedPassword),
+                    ConnectionExpiryInHours = s.ConnectionExpiryInHours,
+                    IsVisible = s.IsVisible,
+                    PersistHistory = s.PersistHistory
                 });
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);

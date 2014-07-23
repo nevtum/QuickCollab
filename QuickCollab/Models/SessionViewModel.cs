@@ -10,5 +10,7 @@ namespace QuickCollab.Models
         public string SessionName { get; set; }
         public bool Secured { get; set; }
         public bool PersistHistory { get; set; }
+        public int ConnectionExpiryInHours { get; set; }
+        public bool IsVisible { get; set; }
     }
 }
