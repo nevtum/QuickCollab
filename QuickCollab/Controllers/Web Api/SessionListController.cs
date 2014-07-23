@@ -40,7 +40,18 @@ namespace QuickCollab.Controllers
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);
         }
 
-        public HttpResponseMessage Post(string id, string password)
+        public HttpResponseMessage GetSession(string id)
+        {
+            SessionInstance instance = _repo.GetSession(id);
+
+            if (instance == null)
+                return Request.CreateResponse(System.Net.HttpStatusCode.NotFound);
+
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK, instance);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage AuthorizeSession(string id, string password)
         {
             SessionInstance instance = _repo.GetSession(id);
 
