@@ -35,7 +35,8 @@ namespace QuickCollab.Controllers
                     Secured = !string.IsNullOrEmpty(s.HashedPassword),
                     ConnectionExpiryInHours = s.ConnectionExpiryInHours,
                     IsVisible = s.IsVisible,
-                    PersistHistory = s.PersistHistory
+                    PersistHistory = s.PersistHistory,
+                    Uri = Url.Link("DefaultApi", new { controller = "SessionList", id = s.Name }),
                 });
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);

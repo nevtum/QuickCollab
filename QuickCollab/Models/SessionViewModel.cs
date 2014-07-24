@@ -13,5 +13,6 @@ namespace QuickCollab.Models
         public bool PersistHistory { get; set; }
         public int ConnectionExpiryInHours { get; set; }
         public bool IsVisible { get; set; }
+        public string Uri { get; set; }
     }
 }
