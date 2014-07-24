@@ -1,0 +1,19 @@
+﻿<table>
+    <thead>
+        <tr>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Store history</th>
+            <th>Secured</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="s in sessions">
+        <tr>
+            <td>{{ s.DateCreated }}</td>
+            <td>{{ s.SessionName }}</td>
+            <td>{{ s.PersistHistory }}</td>
+            <td>{{ s.Secured }}</td>
+            <td><button>Join</button></td>
+        </tr>
+    </tbody>
+</table>

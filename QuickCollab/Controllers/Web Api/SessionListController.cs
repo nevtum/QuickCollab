@@ -30,6 +30,7 @@ namespace QuickCollab.Controllers
                 .Where(s => s.IsVisible == true)
                 .Select(s => new SessionViewModel()
                 {
+                    DateCreated = s.DateCreated,
                     SessionName = s.Name,
                     Secured = !string.IsNullOrEmpty(s.HashedPassword),
                     ConnectionExpiryInHours = s.ConnectionExpiryInHours,
