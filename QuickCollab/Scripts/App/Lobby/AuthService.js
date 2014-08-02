@@ -2,23 +2,28 @@
 
     function AuthService($http) {
 
-        this.verify = function (userName, password, sessionId) {
-            // Authenticate user in back end
-            // return true if successful
-            // return false otherwise
+        // Authenticate user in back end
+        // return true if successful
+        // return false otherwise
+        this.verify = function (password, sessionId) {
 
             data = {
-                id: sessionId,
-                password: password,
+                SessionId: sessionId,
+                Password: password,
             };
 
-            $http.post('../api/AuthorizeSession', data)
-                .success(function (reponse) {
-                    return true;
-                })
-                .error(function (error) {
-                    return false;
-                });
+            authenticated = false;
+
+            $http.post('../api/Sessions/Authorize', data)
+                .success(OnSuccess);
+
+            // Not working, don't know why it doesn't return true
+            return authenticated;
+        };
+
+        var OnSuccess = function (response, authenticated) {
+            console.log(response);
+            authenticated = true;
         };
     }
 

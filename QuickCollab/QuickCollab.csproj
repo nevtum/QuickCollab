@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="Hubs\ContentHub.cs" />
     <Compile Include="Models\MemberLoginDetails.cs" />
+    <Compile Include="Models\SessionRegistration.cs" />
     <Compile Include="Models\SessionViewModel.cs" />
     <Compile Include="Models\StartSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

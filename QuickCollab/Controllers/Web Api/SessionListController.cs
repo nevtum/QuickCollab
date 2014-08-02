@@ -11,13 +11,13 @@ using System.Web.Http;
 namespace QuickCollab.Controllers
 {
     //[Authorize]
-    public class SessionListController : ApiController
+    public class SessionsController : ApiController
     {
         ISessionInstanceRepository _repo;
         RegistrationService _registrationService;
         PasswordHashService _hashService;
 
-        public SessionListController()
+        public SessionsController()
         {
             _repo = new SessionInstanceRepository();
             _registrationService = new RegistrationService();
@@ -53,9 +53,9 @@ namespace QuickCollab.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage AuthorizeSession(string id, string password)
+        public HttpResponseMessage Authorize(SessionRegistration request)
         {
-            SessionInstance instance = _repo.GetSession(id);
+            SessionInstance instance = _repo.GetSession(request.SessionId);
 
             if (instance == null)
                 return Request.CreateResponse(System.Net.HttpStatusCode.NotFound);
@@ -65,11 +65,11 @@ namespace QuickCollab.Controllers
 
             System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(instance.Salt));
 
-            if (_hashService.SaltedPassword(password, instance.Salt) != instance.HashedPassword)
+            if (_hashService.SaltedPassword(request.Password, instance.Salt) != instance.HashedPassword)
                 return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Incorrect password!"));
 
-            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, id))
-                _registrationService.RegisterConnection(User.Identity.Name, id);
+            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, request.SessionId))
+                _registrationService.RegisterConnection(User.Identity.Name, request.SessionId);
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
