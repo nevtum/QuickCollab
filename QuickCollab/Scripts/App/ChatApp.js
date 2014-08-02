@@ -1,7 +1,14 @@
-﻿var chatApp = angular.module('chatApp', ['ngRoute', 'Lobby.Controllers']);
+﻿(function () {
 
-chatApp.config(function ($routeProvider) {
-    $routeProvider
-        .when('/', { controller: 'SessionListCtrl', templateUrl: '../Templates/SessionList.html' })
-        .otherwise({ redirectTo: '/' });
-});
+    Routes = function ($routeProvider) {
+        $routeProvider
+            .when('/', { controller: 'SessionListCtrl', templateUrl: '../Templates/SessionList.html' })
+            .otherwise({ redirectTo: '/' });
+    }
+
+    angular
+        .module('chatApp', ['ngRoute', 'Lobby.Controllers'])
+        .config(Routes);
+
+})();
+
