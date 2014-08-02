@@ -7,48 +7,56 @@
 <!DOCTYPE html>
 
 <style>
-    body {
-        font-family: Calibri;
-        background-color: #d8e0f6;
-        color: #32817e;
-    }
-
-    #hero {
-        margin: 10px;
+    .header {
         padding: 20px;
         background-color: #ace6bc;
         height: 600px;
     }
 
-    #login {
-        margin-top: 10px;
+    .login {
+        padding: 10px;
         margin: 0 auto;
-        padding: 7px;
-        border: solid;
-        border-width: thin;
-        border-color: black;
-        background-color: whitesmoke;
-        width: 600px;
+        background-color: papayawhip;
+    }
+
+    .btn {
+        margin-top: 10px;
     }
 </style>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/bootstrap-3.2.0/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <title>Index</title>
 </head>
 <body>
-    <div id="hero">
-        <h1>QuickCollab</h1>
-        <p>Welcome to QuickCollab. Your one stop shop to lightweight sessions and team collaboration!</p>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="well col-lg-9">
+                    <h1>QuickCollab</h1>
+                    <p>Welcome to QuickCollab. Your one stop shop to lightweight sessions and team collaboration!</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="login">
-        @using (Html.BeginForm("SignIn", "Login"))
-        {
-            @Html.EditorForModel()
-            <input type="submit" value="Sign In" />
-        }
-        @Html.ActionLink("Create an account", "CreateAccount")
+
+    <div class="login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm("SignIn", "Login"))
+                    {
+                        @Html.EditorForModel()
+                        <button class="btn btn-primary btn-sm" type="submit">Sign In</button>
+                    }
+                    @Html.ActionLink("Create an account", "CreateAccount")
+                </div>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
