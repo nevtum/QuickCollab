@@ -22,23 +22,12 @@ namespace QuickCollab.Session
 
         public void RegisterConnection(string clientName, string sessionName)
         {
-            System.Diagnostics.Debug.Assert(!UserRegisteredWithSession(clientName, sessionName));
+            System.Diagnostics.Debug.Assert(!IsUserAuthorized(clientName, sessionName));
 
             SessionInstance instance = _sessionRepo.GetSession(sessionName);
 
             _connRepo.RegisterConnection(clientName, instance);
         }
-
-        //public void UnRegisterConnection(string clientName, string sessionName)
-        //{
-        //    System.Diagnostics.Debug.Assert(UserRegisteredWithSession(clientName, sessionName));
-
-        //    Connection conn = _repo
-        //        .GetActiveConnectionsByUserName(clientName)
-        //        .Single(c => c.SessionName == sessionName);
-
-        //    _repo.UnRegisterConnection(conn);
-        //}
 
         public IEnumerable<string> CurrentSessions(string clientName)
         {
@@ -50,8 +39,7 @@ namespace QuickCollab.Session
         {
             SessionInstance s = _sessionRepo.GetSession(sessionName);
 
-            // No password required
-            if (string.IsNullOrEmpty(s.HashedPassword))
+            if (NoPasswordRequired(s))
                 return true;
 
             if (_passwordService.SaltedPassword(password, s.Salt) == s.HashedPassword)
@@ -60,8 +48,13 @@ namespace QuickCollab.Session
             return false;
         }
 
-        public bool UserRegisteredWithSession(string userName, string sessionName)
+        public bool IsUserAuthorized(string userName, string sessionName)
         {
+            SessionInstance s = _sessionRepo.GetSession(sessionName);
+
+            if (NoPasswordRequired(s))
+                return true;
+
             return _connRepo.GetActiveConnectionsInSession(sessionName)
                 .Any(conn => conn.ClientName == userName);
         }
@@ -90,6 +83,11 @@ namespace QuickCollab.Session
             }
 
             _sessionRepo.AddSession(instance);
+        }
+
+        private bool NoPasswordRequired(SessionInstance instance)
+        {
+            return string.IsNullOrEmpty(instance.HashedPassword);
         }
     }
 }

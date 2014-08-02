@@ -31,7 +31,7 @@ namespace QuickCollab.Controllers.MVC
             if (string.IsNullOrEmpty(_repo.GetSession(sessionId).HashedPassword))
             {
                 // To do. Expiry of user registered with session.
-                if (!_service.UserRegisteredWithSession(User.Identity.Name, sessionId))
+                if (!_service.IsUserAuthorized(User.Identity.Name, sessionId))
                     _service.RegisterConnection(User.Identity.Name, sessionId);
 
                 return RedirectToAction("Index", "SessionInstance", new { SessionId = sessionId });

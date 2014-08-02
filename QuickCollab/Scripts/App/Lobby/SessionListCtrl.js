@@ -21,7 +21,11 @@
             // add session to current tabs open
             // subscribe to signalr chat room
             // make sure to not allow to open another tab if same session open already
-            console.log("Joining " + session.SessionName);
+
+            if (!session.IsUserAuthorized)
+                console.log("Not authorized to join " + session.SessionName);
+            else
+                console.log("Joining " + session.SessionName);
         };
 
         $http.get('../api/Sessions').success(function (data) {

@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace QuickCollab.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class SessionsController : ApiController
     {
         ISessionInstanceRepository _repo;
@@ -34,6 +34,7 @@ namespace QuickCollab.Controllers
                     SessionName = s.Name,
                     Secured = !string.IsNullOrEmpty(s.HashedPassword),
                     ConnectionExpiryInHours = s.ConnectionExpiryInHours,
+                    IsUserAuthorized = _registrationService.IsUserAuthorized(User.Identity.Name, s.Name),
                     IsVisible = s.IsVisible,
                     PersistHistory = s.PersistHistory,
                     Uri = Url.Link("DefaultApi", new { controller = "SessionList", id = s.Name }),
@@ -68,7 +69,7 @@ namespace QuickCollab.Controllers
             if (_hashService.SaltedPassword(request.Password, instance.Salt) != instance.HashedPassword)
                 return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, new Exception("Incorrect password!"));
 
-            if (!_registrationService.UserRegisteredWithSession(User.Identity.Name, request.SessionId))
+            if (!_registrationService.IsUserAuthorized(User.Identity.Name, request.SessionId))
                 _registrationService.RegisterConnection(User.Identity.Name, request.SessionId);
 
             return Request.CreateResponse(System.Net.HttpStatusCode.OK);

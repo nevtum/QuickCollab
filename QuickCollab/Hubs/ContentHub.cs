@@ -29,7 +29,7 @@ namespace QuickCollab.Hubs
         {
             return new Task(() =>
             {
-                if (!_registrationService.UserRegisteredWithSession(Context.ConnectionId, sessionName))
+                if (!_registrationService.IsUserAuthorized(Context.ConnectionId, sessionName))
                     return;
 
                 Clients.Group(sessionName).RecieveMessage(sessionName, message);
@@ -40,7 +40,7 @@ namespace QuickCollab.Hubs
         {
             string clientName = Context.User.Identity.Name;
 
-            if (!_registrationService.UserRegisteredWithSession(clientName, sessionName))
+            if (!_registrationService.IsUserAuthorized(clientName, sessionName))
                 return;
 
             Groups.Add(Context.ConnectionId, sessionName);
@@ -51,7 +51,7 @@ namespace QuickCollab.Hubs
         {
             string clientName = Context.User.Identity.Name;
 
-            if (!_registrationService.UserRegisteredWithSession(clientName, sessionName))
+            if (!_registrationService.IsUserAuthorized(clientName, sessionName))
                 return;
 
             Groups.Remove(Context.ConnectionId, sessionName);
