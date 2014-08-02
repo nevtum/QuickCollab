@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    SessionList = function ($scope, $http, $location, AuthService) {
+    SessionList = function ($scope, $http, AuthService) {
 
         $scope.authenticate = function (session) {
             // show modal view to fill in password
@@ -9,7 +9,12 @@
             // if passed display verified icon then close modal dialog
             console.log("open authentication dialog for session " + session.Uri);
             
-            AuthService.authenticate("hey", "myPassword", session.SessionName);
+            console.log(AuthService);
+
+            if (AuthService.verify("hey", "myPassword", session.SessionName))
+                console.log("success!");
+            else
+                console.log("fail!");
         };
 
         $scope.open = function (session) {
@@ -27,5 +32,5 @@
 
     angular
         .module('Lobby.Controllers', ['chatApp.Security'])
-        .controller('SessionListCtrl', ['$scope', '$http', SessionList]);
+        .controller('SessionListCtrl', ['$scope', '$http', 'AuthService', SessionList]);
 })();
