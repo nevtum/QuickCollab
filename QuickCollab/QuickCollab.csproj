@@ -128,7 +128,7 @@
     <Compile Include="Controllers\MVC\LobbyController.cs" />
     <Compile Include="Controllers\MVC\LoginController.cs" />
     <Compile Include="Controllers\MVC\SessionInstanceController.cs" />
-    <Compile Include="Controllers\Web Api\SessionListController.cs" />
+    <Compile Include="Controllers\Web Api\SessionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
