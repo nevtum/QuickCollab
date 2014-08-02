@@ -11,7 +11,7 @@
             <td>{{ s.DateCreated }}</td>
             <td>{{ s.SessionName }}</td>
             <td>{{ s.PersistHistory }}</td>
-            <td><button ng-click="open(s)">Join</button></td>
+            <td><button ng-click="join(s)">Join</button></td>
             <td><button ng-show="s.Secured == true" ng-click="authenticate(s)">Locked</button></td>
         </tr>
     </tbody>

@@ -17,7 +17,7 @@
                 console.log("fail! Just verify with AuthService to make sure!");
         };
 
-        $scope.open = function (session) {
+        $scope.join = function (session) {
             // add session to current tabs open
             // subscribe to signalr chat room
             // make sure to not allow to open another tab if same session open already
