@@ -7,20 +7,51 @@
 <!DOCTYPE html>
 
 <style>
-    .header {
-        padding: 20px;
-        background-color: #ace6bc;
-        height: 600px;
+    header {
+        font-family: monospace;
+        background: url(https://lh5.googleusercontent.com/-fBhfKu0TBzo/UmcDvZofgII/AAAAAAAADpM/W2XdO0wqid0/w1297-h865-no/Ref5.jpg);
+        background-size: cover;
+        height: 700px;
+    }
+
+        header .intro-text {
+            padding-top: 50px;
+            color: #f8f8f8;
+        }
+
+            header .intro-text > h1 {
+                font-size: 8em;
+            }
+
+            header .intro-text > h3 {
+                font-size: 4em;
+            }
+
+    .shadowed {
+        text-shadow: 1px 2px 3px rgba(0,0,0,0.6);
     }
 
     .login {
+        font-family: monospace;
         padding: 10px;
         margin: 0 auto;
-        background-color: papayawhip;
+        background-color: #808080;
+    }
+
+    .container {
+        text-align: center;
+        align-content: flex-end;
+        color: #f8f8f8;
+        padding: 50px;
     }
 
     .btn {
         margin-top: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+    }
+
+    footer {
+        background-color: midnightblue;
     }
 </style>
 
@@ -32,31 +63,47 @@
     <title>Index</title>
 </head>
 <body>
-    <div class="header">
+    <header>
         <div class="container">
             <div class="row">
-                <div class="well col-lg-9">
-                    <h1>QuickCollab</h1>
-                    <p>Welcome to QuickCollab. Your one stop shop to lightweight sessions and team collaboration!</p>
+                <div class="col-lg-12">
+                    <div class="intro-text shadowed">
+                        <h1>QUICKCOLLAB</h1>
+                        <h3>Team collaboration made easy</h3>
+                    </div>
+                    <a href="/Login/CreateAccount" class="btn btn-lg btn-default">Sign up</a>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
     <div class="login">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-4">
+                    <p>
+                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    </p>
+                </div>
+                <div class="col-lg-8">
                     @using (Html.BeginForm("SignIn", "Login"))
                     {
                         @Html.EditorForModel()
-                        <button class="btn btn-primary btn-sm" type="submit">Sign In</button>
+                        <button class="btn btn-danger btn-sm" type="submit">Sign In</button>
                     }
-                    @Html.ActionLink("Create an account", "CreateAccount")
                 </div>
             </div>
         </div>
     </div>
 
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    My footer
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
