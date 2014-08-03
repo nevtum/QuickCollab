@@ -152,6 +152,7 @@
     <Content Include="Scripts\angular-1.2.20\angular.min.js" />
     <Content Include="Scripts\App\ChatApp.js" />
     <Content Include="Scripts\App\Lobby\AuthService.js" />
+    <Content Include="Scripts\App\Lobby\ContentHub.js" />
     <Content Include="Scripts\App\Lobby\SessionListCtrl.js" />
     <Content Include="Scripts\bootstrap-3.2.0\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

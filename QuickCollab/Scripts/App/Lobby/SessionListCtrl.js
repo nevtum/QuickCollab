@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    SessionList = function ($scope, $http, AuthService) {
+    SessionList = function ($scope, $http, AuthService, ContentHub) {
 
         $scope.authenticate = function (session) {
             // show modal view to fill in password
@@ -13,8 +13,11 @@
 
             if (authenticated === true)
                 console.log("success!");
-            else
+            else {
+                session.IsUserAuthorized = true;
                 console.log("fail! Just verify with AuthService to make sure!");
+            }
+
         };
 
         $scope.join = function (session) {
@@ -25,16 +28,15 @@
             if (!session.IsUserAuthorized)
                 console.log("Not authorized to join " + session.SessionName);
             else
-                console.log("Joining " + session.SessionName);
+                ContentHub.join(session.SessionName);
         };
 
         $http.get('../api/Sessions').success(function (data) {
             $scope.sessions = data;
         });
-
     }
 
     angular
-        .module('Lobby.Controllers', ['chatApp.Security'])
-        .controller('SessionListCtrl', ['$scope', '$http', 'AuthService', SessionList]);
+        .module('Lobby.Controllers', ['chatApp.Security', 'chatApp.SignalR'])
+        .controller('SessionListCtrl', ['$scope', '$http', 'AuthService', 'ContentHub', SessionList]);
 })();

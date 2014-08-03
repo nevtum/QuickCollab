@@ -6,13 +6,13 @@
             <th>Store history</th>
         </tr>
     </thead>
-    <tbody ng-repeat="s in sessions">
-        <tr>
-            <td>{{ s.DateCreated }}</td>
+    <tbody>
+        <tr ng-repeat="s in sessions">
+            <td>{{ s.DateCreated | date: shortDate }}</td>
             <td>{{ s.SessionName }}</td>
             <td>{{ s.PersistHistory }}</td>
-            <td><button class="btn btn-success" ng-click="join(s)">Join</button></td>
-            <td><button class="btn btn-danger" ng-show="s.IsUserAuthorized == false" ng-click="authenticate(s)">Locked</button></td>
+            <td><button class="btn btn-success btn-sm" ng-click="join(s)">Join</button></td>
+            <td><button class="btn btn-danger btn-sm" ng-show="s.IsUserAuthorized == false" ng-click="authenticate(s)">Locked</button></td>
         </tr>
     </tbody>
 </table>
