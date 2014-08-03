@@ -24,6 +24,8 @@ namespace QuickCollab.Hubs
         {
             string content = string.Format("[{0}]: {1}", Context.User.Identity.Name, message);
 
+            LogData("Broadcast", message);
+
             return Clients.All.RecieveBroadcast(content);
         }
 
@@ -33,6 +35,9 @@ namespace QuickCollab.Hubs
             {
                 if (!_registrationService.IsUserAuthorized(Context.ConnectionId, sessionName))
                     return;
+
+                if (_registrationService.IsLoggingEnabled(sessionName))
+                    LogData(sessionName, message);
 
                 Clients.Group(sessionName).RecieveMessage(sessionName, message);
             });
@@ -69,6 +74,11 @@ namespace QuickCollab.Hubs
             }
 
             return base.OnDisconnected();
+        }
+
+        private void LogData(string sessionName, string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

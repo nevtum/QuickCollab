@@ -35,6 +35,11 @@ namespace QuickCollab.Session
                 .Select(c => c.SessionName);
         }
 
+        public bool IsLoggingEnabled(string sessionName)
+        {
+            return _sessionRepo.GetSession(sessionName).PersistHistory;
+        }
+
         public bool ValidatePassword(string sessionName, string password)
         {
             SessionInstance s = _sessionRepo.GetSession(sessionName);

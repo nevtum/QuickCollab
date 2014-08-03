@@ -1,18 +1,21 @@
 ﻿<table class="table">
     <thead>
         <tr>
-            <th>Created</th>
-            <th>Name</th>
-            <th>Store history</th>
+            <th>Session</th>
+            <th>Expiry (hrs)</th>
+            <th></th>
+            <th></th>
+            <th>Date Created</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="s in sessions">
-            <td>{{ s.DateCreated | date: shortDate }}</td>
             <td>{{ s.SessionName }}</td>
-            <td>{{ s.PersistHistory }}</td>
+            <td>{{ s.ConnectionExpiryInHours }}</td>
+            <!--<td>{{ s.PersistHistory }}</td>-->
             <td><button class="btn btn-success btn-sm" ng-click="join(s)">Join</button></td>
             <td><button class="btn btn-danger btn-sm" ng-show="s.IsUserAuthorized == false" ng-click="authenticate(s)">Locked</button></td>
+            <td>{{ s.DateCreated | date: shortDate }}</td>
         </tr>
     </tbody>
 </table>

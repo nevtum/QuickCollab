@@ -23,6 +23,7 @@
             chat.server.broadcastMessage(message);
         };
 
+        // not the most cleanest. use promises instead?
         this.clientBinding = chat.client;
     }
 
