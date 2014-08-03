@@ -12,10 +12,12 @@ namespace QuickCollab.Hubs
     public class ContentHub : Hub
     {
         private RegistrationService _registrationService;
+        private IConnectionRepository _connRepo;
 
         public ContentHub()
         {
             _registrationService = new RegistrationService();
+            _connRepo = new ConnectionRepository();
         }
 
         public Task BroadcastMessage(string message)
@@ -58,18 +60,13 @@ namespace QuickCollab.Hubs
             Clients.OthersInGroup(sessionName).RecieveMessage(string.Format("{0} has left session.", clientName));
         }
 
-        public override Task OnConnected()
-        {
-            // for testing only
-            JoinSession("Open Session");
-
-            return base.OnConnected();
-        }
-
         public override Task OnDisconnected()
         {
-            // for testing only
-            LeaveSession("Open Session");
+            foreach (string session in _connRepo.GetActiveConnectionsByUserName(Context.User.Identity.Name)
+                .Select(c => c.SessionName))
+            {
+                LeaveSession(session);
+            }
 
             return base.OnDisconnected();
         }
