@@ -142,6 +142,8 @@
     <Compile Include="Models\SessionViewModel.cs" />
     <Compile Include="Models\StartSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountsApplicationService.cs" />
+    <Compile Include="Services\IManageAccounts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />

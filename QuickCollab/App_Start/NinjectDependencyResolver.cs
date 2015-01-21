@@ -1,5 +1,7 @@
 ﻿using Ninject;
 using QuickCollab.Accounts;
+using QuickCollab.Security;
+using QuickCollab.Services;
 using QuickCollab.Session;
 using System;
 using System.Collections.Generic;
@@ -54,6 +56,7 @@ namespace QuickCollab
         {
             _container.Bind<IAccountsRepository>().To<AccountsRepository>();
             _container.Bind<ISessionInstanceRepository>().To<SessionInstanceRepository>();
+            _container.Bind<IManageAccounts>().To<AccountsApplicationService>();
         }
     }
 }

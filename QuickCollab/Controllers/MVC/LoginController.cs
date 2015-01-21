@@ -1,25 +1,19 @@
-﻿using QuickCollab.Accounts;
-using QuickCollab.Models;
-using QuickCollab.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
+using QuickCollab.Models;
+using QuickCollab.Services;
 
 namespace QuickCollab.Controllers.MVC
 {
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        private IAccountsRepository _accountsDB;
-        private PasswordHashService _hasher;
+        private IManageAccounts _service;
 
-        public LoginController(IAccountsRepository accounts)
+        public LoginController(IManageAccounts service)
         {
-            _accountsDB = new AccountsRepository();
-            _hasher = new PasswordHashService();
+            _service = service;
         }
 
         public ActionResult SignIn()
@@ -35,7 +29,7 @@ namespace QuickCollab.Controllers.MVC
 
             try
             {
-                AuthenticateUser(details);
+                _service.AuthenticateUser(details);
                 FormsAuthentication.SetAuthCookie(details.UserName, false);
                 return RedirectToAction("Index", "Home");
             }
@@ -58,7 +52,7 @@ namespace QuickCollab.Controllers.MVC
 
             try
             {
-                CreateNewAccount(details);
+                _service.CreateNewAccount(details);
             }
             catch (Exception e)
             {
@@ -71,37 +65,6 @@ namespace QuickCollab.Controllers.MVC
         public ActionResult AccountCreated()
         {
             return View();
-        }
-
-        // Domain logic, should reside in a service
-        private void AuthenticateUser(MemberLoginDetails details)
-        {
-            Account account = _accountsDB.GetAccountByUsername(details.UserName);
-
-            if (account == null)
-                throw new Exception("Invalid username or password");
-
-            if (_hasher.SaltedPassword(details.Password, account.Salt) != account.Password)
-                throw new Exception("Invalid username or password");
-        }
-
-        // Domain logic, should reside in a service
-        private void CreateNewAccount(MemberLoginDetails details)
-        {
-            if (_accountsDB.AccountExists(details.UserName))
-                throw new Exception("Account already exists");
-
-            string salt = _hasher.GetNewSalt();
-
-            Account account = new Account()
-            {
-                DateCreated = DateTime.Now,
-                UserName = details.UserName,
-                Password = _hasher.SaltedPassword(details.Password, salt),
-                Salt = salt
-            };
-
-            _accountsDB.AddAccount(account);
         }
     }
 }
