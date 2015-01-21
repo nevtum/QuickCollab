@@ -1,12 +1,13 @@
 ﻿using Ninject;
 using QuickCollab.Accounts;
+using QuickCollab.Session;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+using System.Web.Http.Dependencies;
 
 namespace QuickCollab
 {
-    public class NinjectDependencyResolver : IDependencyResolver
+    public class NinjectDependencyResolver : IDependencyResolver, System.Web.Mvc.IDependencyResolver
     {
         private IKernel _container;
 
@@ -14,6 +15,25 @@ namespace QuickCollab
         {
             _container = new StandardKernel();
             RegisterServices();
+        }
+
+        public System.Web.Http.Dependencies.IDependencyScope BeginScope()
+        {
+            return this;
+        }
+
+        // Needs fixing here. Goes out of scope
+        // such that there are problems in
+        // next page reload
+        public void Dispose()
+        {
+            //var disposable = _container as IDisposable;
+            //if (disposable != null)
+            //{
+            //    disposable.Dispose();
+            //}
+
+            //_container = null;
         }
 
         public object GetService(Type serviceType)
@@ -33,6 +53,7 @@ namespace QuickCollab
         private void RegisterServices()
         {
             _container.Bind<IAccountsRepository>().To<AccountsRepository>();
+            _container.Bind<ISessionInstanceRepository>().To<SessionInstanceRepository>();
         }
     }
 }
