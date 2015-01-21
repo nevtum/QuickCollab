@@ -33,17 +33,16 @@ namespace QuickCollab.Controllers.MVC
             if (!ModelState.IsValid)
                 return View(details);
 
-            Account account = _accountsDB.GetAccountByUsername(details.UserName);
-
-            if (account == null)
-                return View(details); // Account doesn't exist
-
-            if (_hasher.SaltedPassword(details.Password, account.Salt) != account.Password)
-                return View(details); // Incorrect login
-
-            FormsAuthentication.SetAuthCookie(details.UserName, false);
-
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                AuthenticateUser(details);
+                FormsAuthentication.SetAuthCookie(details.UserName, false);
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception e)
+            {
+                return View(details);
+            }
         }
 
         public ActionResult CreateAccount()
@@ -57,8 +56,40 @@ namespace QuickCollab.Controllers.MVC
             if (!ModelState.IsValid)
                 return RedirectToAction("CreateAccount");
 
-            if (_accountsDB.AccountExists(details.UserName))
+            try
+            {
+                CreateNewAccount(details);
+            }
+            catch (Exception e)
+            {
                 return RedirectToAction("CreateAccount");
+            }
+
+            return RedirectToAction("AccountCreated");
+        }
+
+        public ActionResult AccountCreated()
+        {
+            return View();
+        }
+
+        // Domain logic, should reside in a service
+        private void AuthenticateUser(MemberLoginDetails details)
+        {
+            Account account = _accountsDB.GetAccountByUsername(details.UserName);
+
+            if (account == null)
+                throw new Exception("Invalid username or password");
+
+            if (_hasher.SaltedPassword(details.Password, account.Salt) != account.Password)
+                throw new Exception("Invalid username or password");
+        }
+
+        // Domain logic, should reside in a service
+        private void CreateNewAccount(MemberLoginDetails details)
+        {
+            if (_accountsDB.AccountExists(details.UserName))
+                throw new Exception("Account already exists");
 
             string salt = _hasher.GetNewSalt();
 
@@ -71,13 +102,6 @@ namespace QuickCollab.Controllers.MVC
             };
 
             _accountsDB.AddAccount(account);
-
-            return RedirectToAction("AccountCreated");
-        }
-
-        public ActionResult AccountCreated()
-        {
-            return View();
         }
     }
 }
