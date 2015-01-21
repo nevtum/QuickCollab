@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using QuickCollab.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -31,6 +32,7 @@ namespace QuickCollab
         /// </summary>
         private void RegisterServices()
         {
+            _container.Bind<IAccountsRepository>().To<AccountsRepository>();
         }
     }
 }

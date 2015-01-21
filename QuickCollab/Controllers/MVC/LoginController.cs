@@ -16,7 +16,7 @@ namespace QuickCollab.Controllers.MVC
         private IAccountsRepository _accountsDB;
         private PasswordHashService _hasher;
 
-        public LoginController()
+        public LoginController(IAccountsRepository accounts)
         {
             _accountsDB = new AccountsRepository();
             _hasher = new PasswordHashService();
