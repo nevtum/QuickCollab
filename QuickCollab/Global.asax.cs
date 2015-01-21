@@ -14,8 +14,8 @@ namespace QuickCollab
     {
         protected void Application_Start()
         {
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
             AreaRegistration.RegisterAllAreas();
-
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
