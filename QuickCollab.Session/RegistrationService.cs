@@ -1,9 +1,7 @@
-﻿using QuickCollab.Security;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using QuickCollab.Security;
 
 namespace QuickCollab.Session
 {
@@ -20,13 +18,19 @@ namespace QuickCollab.Session
             _passwordService = new PasswordHashService();
         }
 
-        public void RegisterConnection(string clientName, string sessionName)
+        public bool RegisterConnection(string clientName, string sessionName)
         {
-            System.Diagnostics.Debug.Assert(!IsUserAuthorized(clientName, sessionName));
+            if (string.IsNullOrEmpty(_sessionRepo.GetSession(sessionName).HashedPassword))
+                return true;
+
+            if (!IsUserAuthorized(clientName, sessionName))
+                return false;
 
             SessionInstance instance = _sessionRepo.GetSession(sessionName);
 
             _connRepo.RegisterConnection(clientName, instance);
+
+            return true;
         }
 
         public IEnumerable<string> CurrentSessions(string clientName)
@@ -35,47 +39,25 @@ namespace QuickCollab.Session
                 .Select(c => c.SessionName);
         }
 
+        // Review: Belongs to an entity
         public bool IsLoggingEnabled(string sessionName)
         {
             return _sessionRepo.GetSession(sessionName).PersistHistory;
         }
 
-        public bool ValidatePassword(string sessionName, string password)
+        public void StartNewSession(string sessionName, string password, SessionParameters parameters)
         {
-            SessionInstance s = _sessionRepo.GetSession(sessionName);
-
-            if (NoPasswordRequired(s))
-                return true;
-
-            if (_passwordService.SaltedPassword(password, s.Salt) == s.HashedPassword)
-                return true;
-
-            return false;
-        }
-
-        public bool IsUserAuthorized(string userName, string sessionName)
-        {
-            SessionInstance s = _sessionRepo.GetSession(sessionName);
-
-            if (NoPasswordRequired(s))
-                return true;
-
-            return _connRepo.GetActiveConnectionsInSession(sessionName)
-                .Any(conn => conn.ClientName == userName);
-        }
-
-        public void StartNewSession(string sessionName, bool isVisible, string password, bool persistHistory, int connectionExpiryHours)
-        {
+            // Idempotent operation
             if (_sessionRepo.SessionExists(sessionName))
-                throw new Exception("Session name in use! Please try a different name!");
+                return;
 
             SessionInstance instance = new SessionInstance()
             {
                 DateCreated = DateTime.Now,
                 Name = sessionName,
-                IsVisible = isVisible,
-                PersistHistory = persistHistory,
-                ConnectionExpiryInHours = connectionExpiryHours
+                IsVisible = parameters.IsPublic,
+                PersistHistory = parameters.Persistent,
+                ConnectionExpiryInHours = parameters.ConnectionExpiryInHours
             };
 
             if (!string.IsNullOrEmpty(password))
@@ -90,9 +72,22 @@ namespace QuickCollab.Session
             _sessionRepo.AddSession(instance);
         }
 
+        // Review: Belongs to an entity
         private bool NoPasswordRequired(SessionInstance instance)
         {
             return string.IsNullOrEmpty(instance.HashedPassword);
+        }
+
+        // Review: Belongs to an entity
+        public bool IsUserAuthorized(string userName, string sessionName)
+        {
+            SessionInstance s = _sessionRepo.GetSession(sessionName);
+
+            if (NoPasswordRequired(s))
+                return true;
+
+            return _connRepo.GetActiveConnectionsInSession(sessionName)
+                .Any(conn => conn.ClientName == userName);
         }
     }
 }

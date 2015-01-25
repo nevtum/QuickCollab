@@ -27,15 +27,8 @@ namespace QuickCollab.Controllers.MVC
 
         public ActionResult JoinSession(string sessionId)
         {
-            // check if room is secured
-            if (string.IsNullOrEmpty(_repo.GetSession(sessionId).HashedPassword))
-            {
-                // To do. Expiry of user registered with session.
-                if (!_service.IsUserAuthorized(User.Identity.Name, sessionId))
-                    _service.RegisterConnection(User.Identity.Name, sessionId);
-
+            if (_service.RegisterConnection(User.Identity.Name, sessionId))
                 return RedirectToAction("Index", "SessionInstance", new { SessionId = sessionId });
-            }
 
             // present view to fill in details
             return RedirectToAction("JoinSecured", new { sessionId = sessionId });
@@ -64,10 +57,8 @@ namespace QuickCollab.Controllers.MVC
 
             try
             {
-                if (vm.Secured)
-                    _service.StartNewSession(vm.SessionName, vm.Public, vm.SessionPassword, vm.PersistHistory, vm.ConnectionExpiryInHours);
-                else
-                    _service.StartNewSession(vm.SessionName, vm.Public, string.Empty, vm.PersistHistory, vm.ConnectionExpiryInHours);
+                SessionParameters parameters = new SessionParameters(vm.Public, vm.PersistHistory, vm.ConnectionExpiryInHours);
+                _service.StartNewSession(vm.SessionName, vm.SessionPassword, parameters);
             }
             catch (Exception e)
             {

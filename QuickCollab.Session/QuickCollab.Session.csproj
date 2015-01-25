@@ -53,6 +53,7 @@
     <Compile Include="SessionInstanceRepository.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="RegistrationService.cs" />
+    <Compile Include="SessionParameters.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuickCollab.Security\QuickCollab.Security.csproj">

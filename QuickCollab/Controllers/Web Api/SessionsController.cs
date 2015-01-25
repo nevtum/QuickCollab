@@ -53,6 +53,7 @@ namespace QuickCollab.Controllers
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, instance);
         }
 
+        // Too much domain logic in controller
         [HttpPost]
         public HttpResponseMessage Authorize(SessionRegistration request)
         {
