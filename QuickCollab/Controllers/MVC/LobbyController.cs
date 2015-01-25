@@ -14,10 +14,10 @@ namespace QuickCollab.Controllers.MVC
         private ISessionInstanceRepository _repo;
         private RegistrationService _service;
 
-        public LobbyController()
+        public LobbyController(ISessionInstanceRepository repo, RegistrationService service)
         {
-            _repo = new SessionInstanceRepository();
-            _service = new RegistrationService();
+            _repo = repo;
+            _service = service;
         }
 
         public ActionResult Index()

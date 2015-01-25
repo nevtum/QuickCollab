@@ -14,10 +14,10 @@ namespace QuickCollab.Hubs
         private RegistrationService _registrationService;
         private IConnectionRepository _connRepo;
 
-        public ContentHub()
+        public ContentHub(RegistrationService service, IConnectionRepository connRepo)
         {
-            _registrationService = new RegistrationService();
-            _connRepo = new ConnectionRepository();
+            _registrationService = service;
+            _connRepo = connRepo;
         }
 
         public Task BroadcastMessage(string message)

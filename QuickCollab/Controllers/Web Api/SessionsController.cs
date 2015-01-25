@@ -17,11 +17,11 @@ namespace QuickCollab.Controllers
         RegistrationService _registrationService;
         PasswordHashService _hashService;
 
-        public SessionsController(ISessionInstanceRepository repo)
+        public SessionsController(ISessionInstanceRepository repo, RegistrationService service, PasswordHashService hasher)
         {
             _repo = repo;
-            _registrationService = new RegistrationService();
-            _hashService = new PasswordHashService();
+            _registrationService = service;
+            _hashService = hasher;
         }
 
         public HttpResponseMessage GetSessions()
