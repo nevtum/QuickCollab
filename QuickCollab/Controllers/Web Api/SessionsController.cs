@@ -1,5 +1,6 @@
 ﻿using QuickCollab.Models;
 using QuickCollab.Security;
+using QuickCollab.Services;
 using QuickCollab.Session;
 using System;
 using System.Collections.Generic;
@@ -13,42 +14,19 @@ namespace QuickCollab.Controllers
     [Authorize]
     public class SessionsController : ApiController
     {
-        ISessionInstanceRepository _repo;
         RegistrationService _registrationService;
+        SessionListPresenter _presenter;
 
-        public SessionsController(ISessionInstanceRepository repo, RegistrationService service)
+        public SessionsController(SessionListPresenter presenter, RegistrationService service)
         {
-            _repo = repo;
+            _presenter = presenter;
             _registrationService = service;
         }
 
         public HttpResponseMessage GetSessions()
         {
-            IEnumerable<SessionViewModel> sessions = _repo.ListAllSessions()
-                .Where(s => s.IsVisible == true)
-                .Select(s => new SessionViewModel()
-                {
-                    DateCreated = s.DateCreated,
-                    SessionName = s.Name,
-                    Secured = !string.IsNullOrEmpty(s.HashedPassword),
-                    ConnectionExpiryInHours = s.ConnectionExpiryInHours,
-                    IsUserAuthorized = _registrationService.IsUserAuthorized(User.Identity.Name, s.Name),
-                    IsVisible = s.IsVisible,
-                    PersistHistory = s.PersistHistory,
-                    Uri = Url.Link("DefaultApi", new { controller = "SessionList", id = s.Name }),
-                });
-
+            IEnumerable<SessionViewModel> sessions = _presenter.Sessions(User.Identity.Name);
             return Request.CreateResponse(System.Net.HttpStatusCode.OK, sessions);
-        }
-
-        public HttpResponseMessage GetSession(string id)
-        {
-            SessionInstance instance = _repo.GetSession(id);
-
-            if (instance == null)
-                return Request.CreateResponse(System.Net.HttpStatusCode.NotFound);
-
-            return Request.CreateResponse(System.Net.HttpStatusCode.OK, instance);
         }
 
         [HttpPost]

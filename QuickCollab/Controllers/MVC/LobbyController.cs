@@ -34,16 +34,6 @@ namespace QuickCollab.Controllers.MVC
             return RedirectToAction("JoinSecured", new { sessionId = sessionId });
         }
 
-        public ActionResult JoinSecured(string sessionId)
-        {
-            return View(sessionId);
-        }
-
-        public ActionResult JoinSecured(string sessionId, string password)
-        {
-            return View();
-        }
-
         public ActionResult CreateSession()
         {
             return View();
