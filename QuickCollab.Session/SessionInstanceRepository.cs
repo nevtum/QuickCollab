@@ -21,7 +21,7 @@ namespace QuickCollab.Session
             _sessions = _dbContext.GetCollection<SessionInstance>("Sessions");
         }
 
-        public IQueryable<SessionInstance> ListAllSessions()
+        public IEnumerable<SessionInstance> ListAllSessions()
         {
             return _sessions.FindAllAs<SessionInstance>().AsQueryable();
         }

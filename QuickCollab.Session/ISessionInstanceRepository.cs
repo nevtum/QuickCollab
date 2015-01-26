@@ -7,7 +7,7 @@ namespace QuickCollab.Session
 {
     public interface ISessionInstanceRepository
     {
-        IQueryable<SessionInstance> ListAllSessions();
+        IEnumerable<SessionInstance> ListAllSessions();
         SessionInstance GetSession(string sessionName);
         void AddSession(SessionInstance instance);
         void DeleteSession(string sessionName);

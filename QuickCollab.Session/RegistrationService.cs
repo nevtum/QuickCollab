@@ -33,6 +33,24 @@ namespace QuickCollab.Session
             return true;
         }
 
+        public void Authorize(string username, string sessionName, string password)
+        {
+            SessionInstance instance = _sessionRepo.GetSession(sessionName);
+
+            if (instance == null)
+                throw new Exception("Session not found!");
+
+            if (string.IsNullOrEmpty(instance.HashedPassword))
+                throw new Exception("Room is not secured!");
+
+            System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(instance.Salt));
+
+            if (_passwordService.SaltedPassword(password, instance.Salt) != instance.HashedPassword)
+                throw new Exception("Incorrect password!");
+
+            RegisterConnection(username, sessionName);
+        }
+
         public IEnumerable<string> CurrentSessions(string clientName)
         {
             return _connRepo.GetActiveConnectionsByUserName(clientName)
