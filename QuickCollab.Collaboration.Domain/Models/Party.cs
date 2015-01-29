@@ -8,12 +8,16 @@ namespace QuickCollab.Collaboration.Domain.Models
     // Entity
     public class Party
     {
-        private HashSet<PassId> _admittedPasses;
+        private PartyId _id;
         private PartyDetails _details;
+        private Secret _secret;
+        private HashSet<PassId> _admittedPasses;
 
-        public Party(PartyDetails details)
+        public Party(string id, PartyDetails details, Secret secret)
         {
+            _id = new PartyId(id);
             _details = details;
+            _secret = secret;
             _admittedPasses = new HashSet<PassId>();
         }
 
@@ -22,7 +26,10 @@ namespace QuickCollab.Collaboration.Domain.Models
             if (_details.PastExpiryDate(DateTime.UtcNow))
                 return false;
 
-            if (!_details.Authorized(password))
+            if (_admittedPasses.Contains(pass.PassId()))
+                return true;
+
+            if (!Authorized(password))
                 return false;
 
             _admittedPasses.Add(pass.PassId());
@@ -45,6 +52,33 @@ namespace QuickCollab.Collaboration.Domain.Models
         public int TotalAdmitted()
         {
             return _admittedPasses.Count;
+        }
+
+        private bool Authorized(string password)
+        {
+            if (_secret == null)
+                return true;
+
+            return _secret.IsCorrectPassword(password);
+        }
+    }
+
+    /// <summary>
+    /// A new Id must be generated when a new
+    /// Party is created.
+    /// </summary>
+    public class PartyId
+    {
+        private readonly string _id;
+
+        public PartyId(string id)
+        {
+            _id = id;
+        }
+
+        public string Id()
+        {
+            return _id;
         }
     }
 }

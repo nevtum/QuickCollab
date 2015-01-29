@@ -9,9 +9,9 @@ namespace QuickCollab.Collaboration.Domain.Models
     {
         private PassId _passId;
 
-        public Pass(string connectionId)
+        public Pass(string id)
         {
-            _passId = new PassId(connectionId);
+            _passId = new PassId(id);
         }
 
         public PassId PassId()

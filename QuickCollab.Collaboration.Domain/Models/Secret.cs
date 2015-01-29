@@ -5,6 +5,7 @@ using QuickCollab.Security;
 
 namespace QuickCollab.Collaboration.Domain.Models
 {
+    // Value object
     public class Secret
     {
         #region Fields
