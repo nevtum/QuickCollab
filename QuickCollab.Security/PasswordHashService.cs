@@ -6,16 +6,11 @@ using System.Security.Cryptography;
 
 namespace QuickCollab.Security
 {
-    public class PasswordHashService
+    public static class PasswordHashService
     {
-        private Random _random;
+        private static Random _random = new Random(DateTime.Now.Millisecond);
 
-        public PasswordHashService()
-        {
-            _random = new Random(DateTime.Now.Millisecond);
-        }
-
-        public string SaltedPassword(string password, string salt)
+        public static string SaltedPassword(string password, string salt)
         {
             SHA256 sha = new SHA256Managed();
 
@@ -30,7 +25,7 @@ namespace QuickCollab.Security
             return stringBuilder.ToString();
         }
 
-        public string GetNewSalt()
+        public static string GetNewSalt()
         {
             StringBuilder builder = new StringBuilder(16);
             for (int i = 0; i < 16; i++)

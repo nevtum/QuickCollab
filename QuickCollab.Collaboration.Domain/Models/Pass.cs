@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace QuickCollab.Collaboration.Domain.Models
+{
+    public class Pass
+    {
+        private PassId _passId;
+
+        public Pass(string connectionId)
+        {
+            _passId = new PassId(connectionId);
+        }
+
+        public PassId PassId()
+        {
+            return _passId;
+        }
+    }
+
+    public class PassId
+    {
+        private readonly string _id;
+
+        public PassId(string id)
+        {
+            _id = id;
+        }
+
+        public string Id()
+        {
+            return _id;
+        }
+    }
+}

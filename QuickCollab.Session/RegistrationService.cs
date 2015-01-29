@@ -9,13 +9,11 @@ namespace QuickCollab.Session
     {
         private ISessionInstanceRepository _sessionRepo;
         private IConnectionRepository _connRepo;
-        private PasswordHashService _passwordService;
 
         public RegistrationService()
         {
             _sessionRepo = new SessionInstanceRepository();
             _connRepo = new ConnectionRepository();
-            _passwordService = new PasswordHashService();
         }
 
         public bool RegisterConnection(string clientName, string sessionName)
@@ -45,7 +43,7 @@ namespace QuickCollab.Session
 
             System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(instance.Salt));
 
-            if (_passwordService.SaltedPassword(password, instance.Salt) != instance.HashedPassword)
+            if (PasswordHashService.SaltedPassword(password, instance.Salt) != instance.HashedPassword)
                 throw new Exception("Incorrect password!");
 
             RegisterConnection(username, sessionName);
@@ -80,8 +78,8 @@ namespace QuickCollab.Session
 
             if (!string.IsNullOrEmpty(password))
             {
-                string salt = _passwordService.GetNewSalt();
-                string hashedPassword = _passwordService.SaltedPassword(password, salt);
+                string salt = PasswordHashService.GetNewSalt();
+                string hashedPassword = PasswordHashService.SaltedPassword(password, salt);
 
                 instance.Salt = salt;
                 instance.HashedPassword = hashedPassword;

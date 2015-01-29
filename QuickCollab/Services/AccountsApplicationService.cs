@@ -8,12 +8,10 @@ namespace QuickCollab.Services
     public class AccountsApplicationService : IManageAccounts
     {
         private IAccountsRepository _accounts;
-        private PasswordHashService _hasher;
 
-        public AccountsApplicationService(IAccountsRepository accounts, PasswordHashService hasher)
+        public AccountsApplicationService(IAccountsRepository accounts)
         {
             _accounts = accounts;
-            _hasher = hasher;
         }
 
         public void CreateNewAccount(MemberLoginDetails details)
@@ -21,13 +19,13 @@ namespace QuickCollab.Services
             if (_accounts.AccountExists(details.UserName))
                 throw new Exception("Account already exists");
 
-            string salt = _hasher.GetNewSalt();
+            string salt = PasswordHashService.GetNewSalt();
 
             Account account = new Account()
             {
                 DateCreated = DateTime.Now,
                 UserName = details.UserName,
-                Password = _hasher.SaltedPassword(details.Password, salt),
+                Password = PasswordHashService.SaltedPassword(details.Password, salt),
                 Salt = salt
             };
 
@@ -41,7 +39,7 @@ namespace QuickCollab.Services
             if (account == null)
                 throw new Exception("Invalid username or password");
 
-            if (_hasher.SaltedPassword(details.Password, account.Salt) != account.Password)
+            if (PasswordHashService.SaltedPassword(details.Password, account.Salt) != account.Password)
                 throw new Exception("Invalid username or password");
         }
     }
