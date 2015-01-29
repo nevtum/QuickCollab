@@ -17,6 +17,11 @@ namespace QuickCollab.Collaboration.Domain.Models
 
         #region Constructor
 
+        public Secret(string clearPassword)
+        {
+            CreateHashedPasswordFrom(clearPassword);
+        }
+
         public Secret(string hashedPassword, string salt)
         {
             SetHashedPassword(hashedPassword);
@@ -50,6 +55,15 @@ namespace QuickCollab.Collaboration.Domain.Models
                 throw new NullReferenceException("Password");
 
             _hashedPassword = hashedPassword;
+        }
+
+        private void CreateHashedPasswordFrom(string clearPassword)
+        {
+            if (string.IsNullOrEmpty(clearPassword))
+                throw new NullReferenceException("Password");
+
+            _salt = PasswordHashService.GetNewSalt();
+            _hashedPassword = PasswordHashService.SaltedPassword(clearPassword, _salt);
         }
 
         #endregion

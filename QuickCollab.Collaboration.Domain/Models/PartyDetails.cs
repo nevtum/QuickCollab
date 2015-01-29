@@ -11,10 +11,10 @@ namespace QuickCollab.Collaboration.Domain.Models
         private readonly string _name;
         private readonly DateTime _expiryDate;
 
-        public PartyDetails(string name, DateTime expiryDate)
+        public PartyDetails(string name, DateTime expiryDateUTC)
         {
             _name = name;
-            _expiryDate = expiryDate;
+            _expiryDate = expiryDateUTC;
         }
 
         public string Name()
@@ -22,7 +22,7 @@ namespace QuickCollab.Collaboration.Domain.Models
             return _name;
         }
 
-        public bool PastExpiryDate(DateTime date)
+        public bool ExceededExpiryDate(DateTime date)
         {
             return date > _expiryDate;
         }

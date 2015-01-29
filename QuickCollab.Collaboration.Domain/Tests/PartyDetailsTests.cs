@@ -17,8 +17,8 @@ namespace QuickCollab.Collaboration.Domain.Tests
             DateTime testDate1 = new DateTime(2015, 1, 29, 7, 28, 12);
             DateTime testDate2 = new DateTime(2015, 1, 29, 7, 28, 50);
 
-            Assert.AreEqual(false, details.PastExpiryDate(testDate1));
-            Assert.AreEqual(false, details.PastExpiryDate(testDate2));
+            Assert.AreEqual(false, details.ExceededExpiryDate(testDate1));
+            Assert.AreEqual(false, details.ExceededExpiryDate(testDate2));
         }
 
         [TestMethod]
@@ -30,8 +30,8 @@ namespace QuickCollab.Collaboration.Domain.Tests
             DateTime testDate1 = new DateTime(2015, 1, 29, 7, 28, 51);
             DateTime testDate2 = new DateTime(2016, 1, 23, 5, 23, 14);
 
-            Assert.AreEqual(true, details.PastExpiryDate(testDate1));
-            Assert.AreEqual(true, details.PastExpiryDate(testDate2));
+            Assert.AreEqual(true, details.ExceededExpiryDate(testDate1));
+            Assert.AreEqual(true, details.ExceededExpiryDate(testDate2));
         }
     }
 }

@@ -1,58 +1,78 @@
-﻿using System;
+﻿using QuickCollab.Collaboration.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace QuickCollab.Collaboration.Domain.Models
 {
-    // Entity
+    // Aggregate root
     public class Party
     {
+        #region Fields
+
         private PartyId _id;
         private PartyDetails _details;
         private Secret _secret;
         private HashSet<PassId> _existingPasses;
 
-        public Party(string id, PartyDetails details, Secret secret, IEnumerable<PassId> existingPasses)
+        #endregion
+
+        #region Constructors
+
+        public Party(string id, PartyDetails details)
+            : this(id, details, new List<PassId>())
+        {
+        }
+
+        public Party(string id, PartyDetails details, IEnumerable<PassId> existingPasses)
+            : this(id, details, existingPasses, null)
+        {
+        }
+
+        public Party(string id, PartyDetails details, Secret secret)
+            : this(id, details, new List<PassId>(), secret)
+        {
+        }
+
+        public Party(string id, PartyDetails details, IEnumerable<PassId> existingPasses, Secret secret)
         {
             _id = new PartyId(id);
             _details = details;
-            _secret = secret;
             _existingPasses = new HashSet<PassId>(existingPasses);
+            _secret = secret;
         }
 
-        public bool Admit(Pass pass, string password = null)
-        {
-            if (_details.PastExpiryDate(DateTime.UtcNow))
-                return false;
+        #endregion
 
-            if (_existingPasses.Contains(pass.PassId()))
+        #region Public Methods
+
+        public bool Admit(PassId passId, string password = null)
+        {
+            if (_details.ExceededExpiryDate(DateTime.UtcNow))
+                throw new PartyExpiredException("Party has exceeded expiration date!");
+
+            if (_existingPasses.Contains(passId))
                 return true;
 
             if (!Authorized(password))
                 return false;
 
-            _existingPasses.Add(pass.PassId());
+            _existingPasses.Add(passId);
             return true;
         }
 
         public void Remove(PassId passId)
         {
-            if (_details.PastExpiryDate(DateTime.UtcNow))
+            if (_details.ExceededExpiryDate(DateTime.UtcNow))
                 return;
 
             _existingPasses.Remove(passId);
         }
 
-        public IEnumerable<PassId> ExistingPasses()
-        {
-            return _existingPasses;
-        }
+        #endregion
 
-        public int TotalAdmitted()
-        {
-            return _existingPasses.Count;
-        }
+        #region Private Methods
 
         private bool Authorized(string password)
         {
@@ -61,6 +81,8 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             return _secret.IsCorrectPassword(password);
         }
+
+        #endregion
     }
 
     /// <summary>
