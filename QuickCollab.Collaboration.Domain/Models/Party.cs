@@ -60,6 +60,9 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Add(passId);
             return true;
+
+            // Should publish domain event after
+            // pass successfully admitted
         }
 
         public void Remove(PassId passId)
