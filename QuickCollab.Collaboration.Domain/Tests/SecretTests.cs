@@ -51,7 +51,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void ShouldThrowExceptionForInvalidSalt()
         {
-            Secret secret = new Secret("saltedPassword", null);
+            Secret secret = new Secret("8e248f740436da17b2789b02b88bb601aab9bc759198a9d61426fcf9214b781d", null);
         }
 
         private bool TestPassword(string password)
