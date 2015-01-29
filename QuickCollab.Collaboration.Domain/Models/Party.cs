@@ -11,14 +11,14 @@ namespace QuickCollab.Collaboration.Domain.Models
         private PartyId _id;
         private PartyDetails _details;
         private Secret _secret;
-        private HashSet<PassId> _admittedPasses;
+        private HashSet<PassId> _existingPasses;
 
-        public Party(string id, PartyDetails details, Secret secret)
+        public Party(string id, PartyDetails details, Secret secret, IEnumerable<PassId> existingPasses)
         {
             _id = new PartyId(id);
             _details = details;
             _secret = secret;
-            _admittedPasses = new HashSet<PassId>();
+            _existingPasses = new HashSet<PassId>(existingPasses);
         }
 
         public bool Admit(Pass pass, string password = null)
@@ -26,13 +26,13 @@ namespace QuickCollab.Collaboration.Domain.Models
             if (_details.PastExpiryDate(DateTime.UtcNow))
                 return false;
 
-            if (_admittedPasses.Contains(pass.PassId()))
+            if (_existingPasses.Contains(pass.PassId()))
                 return true;
 
             if (!Authorized(password))
                 return false;
 
-            _admittedPasses.Add(pass.PassId());
+            _existingPasses.Add(pass.PassId());
             return true;
         }
 
@@ -41,17 +41,17 @@ namespace QuickCollab.Collaboration.Domain.Models
             if (_details.PastExpiryDate(DateTime.UtcNow))
                 return;
 
-            _admittedPasses.Remove(passId);
+            _existingPasses.Remove(passId);
         }
 
-        public IEnumerable<PassId> ActivePasses()
+        public IEnumerable<PassId> ExistingPasses()
         {
-            return _admittedPasses;
+            return _existingPasses;
         }
 
         public int TotalAdmitted()
         {
-            return _admittedPasses.Count;
+            return _existingPasses.Count;
         }
 
         private bool Authorized(string password)
