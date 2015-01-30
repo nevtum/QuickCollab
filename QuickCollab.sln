@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Session", "Quic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Accounts", "QuickCollab.Accounts\QuickCollab.Accounts.csproj", "{25ECE1B3-F150-4E0B-B87D-FE6870E5D5D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Collaboration.Domain", "QuickCollab.Collaboration.Domain\QuickCollab.Collaboration.Domain.csproj", "{6CDCB033-892B-4B52-850B-D4B6FE749B99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickCollab.Collaboration", "QuickCollab.Collaboration\QuickCollab.Collaboration.csproj", "{6CDCB033-892B-4B52-850B-D4B6FE749B99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

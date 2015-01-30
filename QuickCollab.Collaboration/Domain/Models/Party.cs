@@ -47,6 +47,11 @@ namespace QuickCollab.Collaboration.Domain.Models
 
         #region Public Methods
 
+        public bool IsPasswordProtected()
+        {
+            return _secret != null;
+        }
+
         public bool Admit(PassId passId, string password = null)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
@@ -60,9 +65,6 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Add(passId);
             return true;
-
-            // Should publish domain event after
-            // pass successfully admitted
         }
 
         public void Remove(PassId passId)
@@ -79,7 +81,7 @@ namespace QuickCollab.Collaboration.Domain.Models
 
         private bool Authorized(string password)
         {
-            if (_secret == null)
+            if (!IsPasswordProtected())
                 return true;
 
             return _secret.IsCorrectPassword(password);

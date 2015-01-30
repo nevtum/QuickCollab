@@ -7,8 +7,8 @@
     <ProjectGuid>{6CDCB033-892B-4B52-850B-D4B6FE749B99}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuickCollab.Collaboration.Domain</RootNamespace>
-    <AssemblyName>QuickCollab.Collaboration.Domain</AssemblyName>
+    <RootNamespace>QuickCollab.Collaboration</RootNamespace>
+    <AssemblyName>QuickCollab.Collaboration</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,12 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\PartyExpiredException.cs" />
-    <Compile Include="Models\Member.cs" />
-    <Compile Include="Models\Party.cs" />
-    <Compile Include="Models\PartyDetails.cs" />
-    <Compile Include="Models\Pass.cs" />
-    <Compile Include="Models\Secret.cs" />
+    <Compile Include="Domain\Exceptions\PartyExpiredException.cs" />
+    <Compile Include="Domain\Models\Member.cs" />
+    <Compile Include="Domain\Models\Party.cs" />
+    <Compile Include="Domain\Models\PartyDetails.cs" />
+    <Compile Include="Domain\Models\Pass.cs" />
+    <Compile Include="Domain\Models\Secret.cs" />
+    <Compile Include="Domain\Services\IManagePartyPasses.cs" />
+    <Compile Include="Domain\Services\IPartyRepository.cs" />
+    <Compile Include="Domain\Services\PartyManagementService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\PartyAggregateTests.cs" />
     <Compile Include="Tests\PartyDetailsTests.cs" />
