@@ -9,9 +9,9 @@ namespace QuickCollab.Collaboration.Domain.Services
     {
         private IPartyRepository _repository;
 
-        public PartyManagementService(IPartyRepository parties)
+        public PartyManagementService(IPartyRepository repository)
         {
-            _repository = parties;
+            _repository = repository;
         }
 
         public void AdmitPassToParty(PassId passId, PartyId partyId, string clearPassword = null)
@@ -22,6 +22,7 @@ namespace QuickCollab.Collaboration.Domain.Services
             if (result)
             {
                 // publish admission granted event
+                _repository.Save(party);
             }
             else
             {

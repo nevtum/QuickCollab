@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\PartyAggregateTests.cs" />
     <Compile Include="Tests\PartyDetailsTests.cs" />
+    <Compile Include="Tests\PartyManagementTests.cs" />
     <Compile Include="Tests\SecretTests.cs" />
   </ItemGroup>
   <ItemGroup />

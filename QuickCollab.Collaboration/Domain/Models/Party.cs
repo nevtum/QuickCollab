@@ -1,8 +1,6 @@
-﻿using QuickCollab.Collaboration.Domain.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using QuickCollab.Collaboration.Domain.Exceptions;
 
 namespace QuickCollab.Collaboration.Domain.Models
 {
@@ -19,6 +17,14 @@ namespace QuickCollab.Collaboration.Domain.Models
         #endregion
 
         #region Constructors
+
+        public Party(Party srcParty)
+        {
+            _id = srcParty._id;
+            _details = srcParty._details;
+            _secret = srcParty._secret;
+            _existingPasses = new HashSet<PassId>(srcParty._existingPasses);
+        }
 
         public Party(string id, PartyDetails details)
             : this(id, details, new List<PassId>())
@@ -50,6 +56,11 @@ namespace QuickCollab.Collaboration.Domain.Models
         public bool IsPasswordProtected()
         {
             return _secret != null;
+        }
+
+        public IEnumerable<PassId> ExistingPasses()
+        {
+            return _existingPasses;
         }
 
         public bool Admit(PassId passId, string password = null)
