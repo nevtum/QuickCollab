@@ -4,7 +4,13 @@ using QuickCollab.Collaboration.Domain.Exceptions;
 
 namespace QuickCollab.Collaboration.Domain.Models
 {
-    // Aggregate root
+    /// <summary>
+    /// Aggregate root
+    /// 
+    /// To do: Convert between domain
+    /// object and DTO without exposing
+    /// internal details to domain object.
+    /// </summary>
     public class Party
     {
         #region Fields
@@ -53,11 +59,6 @@ namespace QuickCollab.Collaboration.Domain.Models
 
         #region Public Methods
 
-        public bool IsPasswordProtected()
-        {
-            return _secret != null;
-        }
-
         public IEnumerable<PassId> ExistingPasses()
         {
             return _existingPasses;
@@ -96,6 +97,11 @@ namespace QuickCollab.Collaboration.Domain.Models
                 return true;
 
             return _secret.IsCorrectPassword(password);
+        }
+
+        private bool IsPasswordProtected()
+        {
+            return _secret != null;
         }
 
         #endregion
