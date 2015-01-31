@@ -17,17 +17,16 @@ namespace QuickCollab.Collaboration.Domain.Services
         public void AdmitPassToParty(PassId passId, PartyId partyId, string clearPassword = null)
         {
             Party party = _repository.GetPartyById(partyId);
-            bool result = party.Register(passId, clearPassword);
+            party.Register(passId, clearPassword);
 
-            if (result)
+            _repository.Save(party);
+
+            foreach (Event ev in party.GetUncommittedChanges())
             {
-                // publish admission granted event
-                _repository.Save(party);
+                // publish event
             }
-            else
-            {
-                // publish admission rejected event
-            }
+
+            party.MarkChangesAsCommitted();
         }
 
         public void RemovePassFromParty(PassId passId, PartyId partyId)
@@ -35,13 +34,20 @@ namespace QuickCollab.Collaboration.Domain.Services
             Party party = _repository.GetPartyById(partyId);
             party.UnRegister(passId);
 
-            // publish passId removed event
+            _repository.Save(party);
+
+            foreach (Event ev in party.GetUncommittedChanges())
+            {
+                // publish event
+            }
+
+            party.MarkChangesAsCommitted();
         }
 
         public bool EnsureAdmission(PassId passId, PartyId partyId)
         {
             Party party = _repository.GetPartyById(partyId);
-            return party.Register(passId);
+            return party.EnsureAdmission(passId);
         }
     }
 }

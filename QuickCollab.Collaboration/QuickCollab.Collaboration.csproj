@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\Event.cs" />
+    <Compile Include="Domain\Events\PassUnregistered.cs" />
+    <Compile Include="Domain\Events\PassRegistered.cs" />
     <Compile Include="Domain\Exceptions\NotAuthorizedException.cs" />
     <Compile Include="Domain\Exceptions\PartyExpiredException.cs" />
     <Compile Include="Domain\Models\Member.cs" />

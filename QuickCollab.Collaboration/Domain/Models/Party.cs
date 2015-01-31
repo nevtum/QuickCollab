@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using QuickCollab.Collaboration.Domain.Exceptions;
+using QuickCollab.Collaboration.Domain.Events;
 
 namespace QuickCollab.Collaboration.Domain.Models
 {
@@ -11,7 +12,7 @@ namespace QuickCollab.Collaboration.Domain.Models
     /// object and DTO without exposing
     /// internal details to domain object.
     /// </summary>
-    public class Party
+    public class Party : AggregateRoot
     {
         #region Fields
 
@@ -65,9 +66,8 @@ namespace QuickCollab.Collaboration.Domain.Models
         }
 
         /// <summary>
-        /// To do: publish a domain event
-        /// on success. Make method
-        /// return void.
+        /// To do: change method signature
+        /// to return void
         /// </summary>
         public bool Register(PassId passId, string password = null)
         {
@@ -82,7 +82,9 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Add(passId);
 
-            return true;
+            AddNewChange(new PassRegistered(_id, passId, DateTime.UtcNow));
+
+            return true; // To change method signature to void
         }
 
         public bool EnsureAdmission(PassId passId)
@@ -92,12 +94,7 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             return _existingPasses.Contains(passId);
         }
-
-        /// <summary>
-        /// To do: publish a domain event
-        /// on successful unregister. Make
-        /// method return void.
-        /// </summary>
+        
         public void UnRegister(PassId passId)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
@@ -105,7 +102,7 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Remove(passId);
 
-            // publish domain event
+            AddNewChange(new PassUnregistered(_id, passId, DateTime.UtcNow));
         }
 
         #endregion
