@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using QuickCollab.Collaboration.Domain.Events;
 
 namespace QuickCollab.Collaboration.Domain
 {

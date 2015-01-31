@@ -1,4 +1,6 @@
 ﻿using QuickCollab.Collaboration.Domain.Models;
+using QuickCollab.Collaboration.Domain.Events;
+using QuickCollab.Collaboration.Messaging;
 
 namespace QuickCollab.Collaboration.Domain.Services
 {
@@ -8,10 +10,12 @@ namespace QuickCollab.Collaboration.Domain.Services
     public class PartyManagementService : IManagePartyPasses
     {
         private IPartyRepository _repository;
+        private IEventPublisher _publisher;
 
-        public PartyManagementService(IPartyRepository repository)
+        public PartyManagementService(IPartyRepository repository, IEventPublisher publisher)
         {
             _repository = repository;
+            _publisher = publisher;
         }
 
         public void AdmitPassToParty(PassId passId, PartyId partyId, string clearPassword = null)
@@ -22,9 +26,7 @@ namespace QuickCollab.Collaboration.Domain.Services
             _repository.Save(party);
 
             foreach (Event ev in party.GetUncommittedChanges())
-            {
-                // publish event
-            }
+                _publisher.Publish(ev);
 
             party.MarkChangesAsCommitted();
         }
@@ -37,9 +39,7 @@ namespace QuickCollab.Collaboration.Domain.Services
             _repository.Save(party);
 
             foreach (Event ev in party.GetUncommittedChanges())
-            {
-                // publish event
-            }
+                _publisher.Publish(ev);
 
             party.MarkChangesAsCommitted();
         }

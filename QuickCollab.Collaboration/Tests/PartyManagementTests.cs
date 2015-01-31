@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QuickCollab.Collaboration.Messaging;
+using QuickCollab.Collaboration.Domain.Events;
 using QuickCollab.Collaboration.Domain.Exceptions;
 using QuickCollab.Collaboration.Domain.Models;
 using QuickCollab.Collaboration.Domain.Services;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace QuickCollab.Collaboration.Tests
 {
@@ -15,26 +14,39 @@ namespace QuickCollab.Collaboration.Tests
         [TestMethod]
         public void ShouldStorePassIdAfterAdmission()
         {
+            PassRegistered ev = null;
+
+            EventPublisher publisher = new EventPublisher();
+
+            publisher.Subscribe<PassRegistered>((e) =>
+            {
+                ev = e;
+            });
+
             IPartyRepository repo = new MockPartyRepository();
-            IManagePartyPasses service = new PartyManagementService(repo);
+            IManagePartyPasses service = new PartyManagementService(repo, publisher);
 
             service.AdmitPassToParty(new PassId("5325"), new PartyId("123"), "SecretPassword");
 
-            Party party = repo.GetPartyById(new PartyId("123"));
-
-            IEnumerable<PassId> ids = party.ExistingPasses();;
-
-            Assert.AreEqual(3, ids.Count());
-            Assert.AreEqual(true, ids.Any(passId => passId.Id() == "1"));
-            Assert.AreEqual(true, ids.Any(passId => passId.Id() == "2"));
-            Assert.AreEqual(true, ids.Any(passId => passId.Id() == "5325"));
+            Assert.IsNotNull(ev);
+            Assert.AreEqual("123", ev.PartyId.Id());
+            Assert.AreEqual("5325", ev.PassId.Id());
         }
 
         [TestMethod]
         public void ShouldNotStorePassIdAfterRejectedAdmission()
         {
+            bool triggered = false;
+
+            EventPublisher publisher = new EventPublisher();
+
+            publisher.Subscribe<PassRegistered>(e =>
+            {
+                triggered = true;
+            });
+
             IPartyRepository repo = new MockPartyRepository();
-            IManagePartyPasses service = new PartyManagementService(repo);
+            IManagePartyPasses service = new PartyManagementService(repo, publisher);
 
             bool threwException = false;
 
@@ -48,14 +60,7 @@ namespace QuickCollab.Collaboration.Tests
             }
 
             Assert.AreEqual(true, threwException);
-
-            Party party = repo.GetPartyById(new PartyId("123"));
-
-            IEnumerable<PassId> ids = party.ExistingPasses();
-
-            Assert.AreEqual(2, ids.Count());
-            Assert.AreEqual(true, ids.Any(passId => passId.Id() == "1"));
-            Assert.AreEqual(true, ids.Any(passId => passId.Id() == "2"));
+            Assert.AreEqual(false, triggered);
         }
     }
 
