@@ -15,10 +15,8 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateNonSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Admit(passId));
-
-            // Tested again for idempotency
-            Assert.AreEqual(true, party.Admit(passId));
+            Assert.AreEqual(true, party.Register(passId));
+            Assert.AreEqual(true, party.EnsureAdmission(passId));
         }
 
         [TestMethod]
@@ -28,24 +26,20 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Admit(passId, "SecretPassword"));
-
-            // Tested again for idempotency
-            Assert.AreEqual(true, party.Admit(passId, "SecretPassword"));
-
-            // Tested again for idempotency, without password
-            Assert.AreEqual(true, party.Admit(passId));
+            Assert.AreEqual(true, party.Register(passId, "SecretPassword"));
+            Assert.AreEqual(true, party.EnsureAdmission(passId));
+            Assert.AreEqual(true, party.EnsureAdmission(passId));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NotAuthorizedException))]
         public void ShouldRejectPassForSecuredParty()
         {
             DateTime expiryDate = DateTime.UtcNow.AddHours(1);
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(false, party.Admit(passId, "WrongPassword"));
-            Assert.AreEqual(false, party.Admit(passId, "#@@$^@&@#&"));
+            Assert.AreEqual(false, party.Register(passId, "WrongPassword"));
         }
 
         [TestMethod]
@@ -56,7 +50,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(false, party.Admit(passId));
+            Assert.AreEqual(false, party.Register(passId));
         }
 
         [TestMethod]
@@ -67,7 +61,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateNonSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Admit(passId));
+            Assert.AreEqual(true, party.Register(passId));
         }
 
         [TestMethod]
@@ -79,7 +73,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             PassId passId = CreatePassId();
 
             // Throws error despite correct password
-            Assert.AreEqual(true, party.Admit(passId, "SecretPassword"));
+            Assert.AreEqual(true, party.Register(passId, "SecretPassword"));
         }
 
         [TestMethod]
@@ -90,7 +84,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Admit(passId, "WrongPassword"));
+            Assert.AreEqual(true, party.Register(passId, "WrongPassword"));
         }
 
         #region Helper Methods

@@ -64,27 +64,48 @@ namespace QuickCollab.Collaboration.Domain.Models
             return _existingPasses;
         }
 
-        public bool Admit(PassId passId, string password = null)
+        /// <summary>
+        /// To do: publish a domain event
+        /// on success. Make method
+        /// return void.
+        /// </summary>
+        public bool Register(PassId passId, string password = null)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
                 throw new PartyExpiredException("Party has exceeded expiration date!");
 
             if (_existingPasses.Contains(passId))
-                return true;
+                throw new InvalidOperationException("Pass already exists!");
 
             if (!Authorized(password))
-                return false;
+                throw new NotAuthorizedException("Incorrect password!");
 
             _existingPasses.Add(passId);
+
             return true;
         }
 
-        public void Remove(PassId passId)
+        public bool EnsureAdmission(PassId passId)
+        {
+            if (_details.ExceededExpiryDate(DateTime.UtcNow))
+                throw new PartyExpiredException("Party has exceeded expiration date!");
+
+            return _existingPasses.Contains(passId);
+        }
+
+        /// <summary>
+        /// To do: publish a domain event
+        /// on successful unregister. Make
+        /// method return void.
+        /// </summary>
+        public void UnRegister(PassId passId)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
                 return;
 
             _existingPasses.Remove(passId);
+
+            // publish domain event
         }
 
         #endregion

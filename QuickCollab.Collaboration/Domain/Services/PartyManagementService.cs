@@ -17,7 +17,7 @@ namespace QuickCollab.Collaboration.Domain.Services
         public void AdmitPassToParty(PassId passId, PartyId partyId, string clearPassword = null)
         {
             Party party = _repository.GetPartyById(partyId);
-            bool result = party.Admit(passId, clearPassword);
+            bool result = party.Register(passId, clearPassword);
 
             if (result)
             {
@@ -33,7 +33,7 @@ namespace QuickCollab.Collaboration.Domain.Services
         public void RemovePassFromParty(PassId passId, PartyId partyId)
         {
             Party party = _repository.GetPartyById(partyId);
-            party.Remove(passId);
+            party.UnRegister(passId);
 
             // publish passId removed event
         }
@@ -41,7 +41,7 @@ namespace QuickCollab.Collaboration.Domain.Services
         public bool EnsureAdmission(PassId passId, PartyId partyId)
         {
             Party party = _repository.GetPartyById(partyId);
-            return party.Admit(passId);
+            return party.Register(passId);
         }
     }
 }

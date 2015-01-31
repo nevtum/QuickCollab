@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QuickCollab.Collaboration.Domain.Exceptions;
 using QuickCollab.Collaboration.Domain.Models;
 using QuickCollab.Collaboration.Domain.Services;
 using System;
@@ -35,7 +36,18 @@ namespace QuickCollab.Collaboration.Tests
             IPartyRepository repo = new MockPartyRepository();
             IManagePartyPasses service = new PartyManagementService(repo);
 
-            service.AdmitPassToParty(new PassId("5325"), new PartyId("123"), "WrongPassword");
+            bool threwException = false;
+
+            try
+            {
+                service.AdmitPassToParty(new PassId("5325"), new PartyId("123"), "WrongPassword");
+            }
+            catch(NotAuthorizedException e)
+            {
+                threwException = true;
+            }
+
+            Assert.AreEqual(true, threwException);
 
             Party party = repo.GetPartyById(new PartyId("123"));
 

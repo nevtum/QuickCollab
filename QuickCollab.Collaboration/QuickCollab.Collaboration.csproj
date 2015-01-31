@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Exceptions\NotAuthorizedException.cs" />
     <Compile Include="Domain\Exceptions\PartyExpiredException.cs" />
     <Compile Include="Domain\Models\Member.cs" />
     <Compile Include="Domain\Models\Party.cs" />
