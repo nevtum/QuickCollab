@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickCollab.Collaboration.Domain.Models;
 using QuickCollab.Collaboration.Domain.Exceptions;
+using QuickCollab.Collaboration.Domain.Events;
 
 namespace QuickCollab.Collaboration.Domain.Tests
 {
@@ -15,7 +17,11 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateNonSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Register(passId));
+            party.Register(passId);
+
+            Event ev = party.GetUncommittedChanges().Single();
+
+            Assert.IsInstanceOfType(ev, typeof(PassRegistered));
             Assert.AreEqual(true, party.EnsureAdmission(passId));
         }
 
@@ -26,7 +32,11 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Register(passId, "SecretPassword"));
+            party.Register(passId, "SecretPassword");
+
+            Event ev = party.GetUncommittedChanges().Single();
+
+            Assert.IsInstanceOfType(ev, typeof(PassRegistered));
             Assert.AreEqual(true, party.EnsureAdmission(passId));
             Assert.AreEqual(true, party.EnsureAdmission(passId));
         }
@@ -39,7 +49,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(false, party.Register(passId, "WrongPassword"));
+            party.Register(passId, "WrongPassword");
         }
 
         [TestMethod]
@@ -50,7 +60,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(false, party.Register(passId));
+            party.Register(passId);
         }
 
         [TestMethod]
@@ -61,7 +71,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateNonSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Register(passId));
+            party.Register(passId);
         }
 
         [TestMethod]
@@ -73,7 +83,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             PassId passId = CreatePassId();
 
             // Throws error despite correct password
-            Assert.AreEqual(true, party.Register(passId, "SecretPassword"));
+            party.Register(passId, "SecretPassword");
         }
 
         [TestMethod]
@@ -84,7 +94,7 @@ namespace QuickCollab.Collaboration.Domain.Tests
             Party party = CreateSecuredParty(expiryDate);
             PassId passId = CreatePassId();
 
-            Assert.AreEqual(true, party.Register(passId, "WrongPassword"));
+            party.Register(passId, "WrongPassword");
         }
 
         #region Helper Methods

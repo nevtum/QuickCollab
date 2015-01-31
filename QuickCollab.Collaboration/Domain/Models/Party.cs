@@ -65,11 +65,7 @@ namespace QuickCollab.Collaboration.Domain.Models
             return _existingPasses;
         }
 
-        /// <summary>
-        /// To do: change method signature
-        /// to return void
-        /// </summary>
-        public bool Register(PassId passId, string password = null)
+        public void Register(PassId passId, string password = null)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
                 throw new PartyExpiredException("Party has exceeded expiration date!");
@@ -83,8 +79,6 @@ namespace QuickCollab.Collaboration.Domain.Models
             _existingPasses.Add(passId);
 
             AddNewChange(new PassRegistered(_id, passId, DateTime.UtcNow));
-
-            return true; // To change method signature to void
         }
 
         public bool EnsureAdmission(PassId passId)
