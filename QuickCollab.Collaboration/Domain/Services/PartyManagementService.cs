@@ -1,6 +1,10 @@
-﻿using QuickCollab.Collaboration.Domain.Models;
-using QuickCollab.Collaboration.Domain.Events;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using QuickCollab.Collaboration.Messaging;
+using QuickCollab.Collaboration.Domain.Models;
+using QuickCollab.Collaboration.Domain.Events;
+using QuickCollab.Collaboration.Domain.Exceptions;
 
 namespace QuickCollab.Collaboration.Domain.Services
 {
@@ -13,6 +17,31 @@ namespace QuickCollab.Collaboration.Domain.Services
         {
             _repository = repository;
             _publisher = publisher;
+        }
+
+        /// <summary>
+        /// To do: write unit test,
+        /// verify business rules.
+        /// </summary>
+        public void OpenNewParty(PartyDetails details, string clearPassword = null)
+        {
+            IEnumerable<PartySummary> openParties = _repository.OpenParties(DateTime.UtcNow);
+
+            if (openParties.Any(p => p.Details.HasDuplicateName(details)))
+                throw new DuplicatePartyNameException("Another open party exists with the same name!");
+
+            string id = Guid.NewGuid().ToString();
+
+            Party party;
+
+            if (clearPassword == null)
+                party = new Party(id, details, new Secret(clearPassword));
+            else
+                party = new Party(id, details);
+
+            _repository.Save(party);
+
+            _publisher.Publish<NewPartyOpened>(new NewPartyOpened(new PartyId(id)));
         }
 
         public void AdmitPassToParty(PassId passId, PartyId partyId, string clearPassword = null)

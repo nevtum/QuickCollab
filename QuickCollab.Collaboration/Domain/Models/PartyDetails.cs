@@ -19,6 +19,11 @@ namespace QuickCollab.Collaboration.Domain.Models
             return _name;
         }
 
+        public bool HasDuplicateName(PartyDetails other)
+        {
+            return other.Name() == Name();
+        }
+
         public bool ExceededExpiryDate(DateTime date)
         {
             return date > _expiryDate;

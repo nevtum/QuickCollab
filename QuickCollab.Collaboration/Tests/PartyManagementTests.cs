@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickCollab.Collaboration.Messaging;
-using QuickCollab.Collaboration.Domain.Events;
-using QuickCollab.Collaboration.Domain.Exceptions;
 using QuickCollab.Collaboration.Domain.Models;
+using QuickCollab.Collaboration.Domain.Events;
 using QuickCollab.Collaboration.Domain.Services;
+using QuickCollab.Collaboration.Domain.Exceptions;
 
 namespace QuickCollab.Collaboration.Tests
 {
@@ -89,6 +90,11 @@ namespace QuickCollab.Collaboration.Tests
         public void Save(Party party)
         {
             _parties = new Party(party);
+        }
+
+        public IEnumerable<PartySummary> OpenParties(DateTime asOfDate)
+        {
+            throw new NotImplementedException();
         }
     }
 

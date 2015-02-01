@@ -45,13 +45,16 @@
   <ItemGroup>
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Domain\Events\Event.cs" />
+    <Compile Include="Domain\Events\NewPartyOpened.cs" />
     <Compile Include="Domain\Events\PassUnregistered.cs" />
     <Compile Include="Domain\Events\PassRegistered.cs" />
+    <Compile Include="Domain\Exceptions\DuplicatePartyNameException.cs" />
     <Compile Include="Domain\Exceptions\NotAuthorizedException.cs" />
     <Compile Include="Domain\Exceptions\PartyExpiredException.cs" />
     <Compile Include="Domain\Models\Member.cs" />
     <Compile Include="Domain\Models\Party.cs" />
     <Compile Include="Domain\Models\PartyDetails.cs" />
+    <Compile Include="Domain\Models\PartySummary.cs" />
     <Compile Include="Domain\Models\Pass.cs" />
     <Compile Include="Domain\Models\Secret.cs" />
     <Compile Include="Domain\Services\IManagePartyPasses.cs" />
