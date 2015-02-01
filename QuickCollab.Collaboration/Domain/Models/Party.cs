@@ -60,11 +60,6 @@ namespace QuickCollab.Collaboration.Domain.Models
 
         #region Public Methods
 
-        public IEnumerable<PassId> ExistingPasses()
-        {
-            return _existingPasses;
-        }
-
         public void Register(PassId passId, string password = null)
         {
             if (_details.ExceededExpiryDate(DateTime.UtcNow))
