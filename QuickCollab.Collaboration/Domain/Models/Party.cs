@@ -73,7 +73,7 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Add(passId);
 
-            AddNewChange(new PassRegistered(_id, passId, DateTime.UtcNow));
+            AddNewChange(new PassRegistered(_id, passId));
         }
 
         public bool EnsureAdmission(PassId passId)
@@ -91,7 +91,7 @@ namespace QuickCollab.Collaboration.Domain.Models
 
             _existingPasses.Remove(passId);
 
-            AddNewChange(new PassUnregistered(_id, passId, DateTime.UtcNow));
+            AddNewChange(new PassUnregistered(_id, passId));
         }
 
         #endregion

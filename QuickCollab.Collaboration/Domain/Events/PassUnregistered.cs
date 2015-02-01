@@ -5,11 +5,11 @@ namespace QuickCollab.Collaboration.Domain.Events
 {
     public class PassUnregistered : Event
     {
-        public PassUnregistered(PartyId partyId, PassId passId, DateTime time)
+        public PassUnregistered(PartyId partyId, PassId passId)
         {
             PartyId = partyId;
             PassId = passId;
-            Time = time;
+            Time = DateTime.UtcNow;
         }
 
         public PartyId PartyId { get; private set; }
