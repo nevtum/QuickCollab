@@ -58,6 +58,7 @@
     <Compile Include="Domain\Models\Pass.cs" />
     <Compile Include="Domain\Models\Secret.cs" />
     <Compile Include="Domain\Services\IManagePartyPasses.cs" />
+    <Compile Include="Domain\Services\IOpenNewParty.cs" />
     <Compile Include="Domain\Services\IPartyRepository.cs" />
     <Compile Include="Domain\Services\PartyManagementService.cs" />
     <Compile Include="Messaging\EventPublisher.cs" />

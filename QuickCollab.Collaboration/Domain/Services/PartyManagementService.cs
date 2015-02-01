@@ -8,7 +8,7 @@ using QuickCollab.Collaboration.Domain.Exceptions;
 
 namespace QuickCollab.Collaboration.Domain.Services
 {
-    public class PartyManagementService : IManagePartyPasses
+    public class PartyManagementService : IManagePartyPasses, IOpenNewParty
     {
         private IPartyRepository _repository;
         private IEventPublisher _publisher;
