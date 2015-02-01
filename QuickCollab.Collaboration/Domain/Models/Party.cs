@@ -115,8 +115,8 @@ namespace QuickCollab.Collaboration.Domain.Models
     }
 
     /// <summary>
-    /// A new Id must be generated when a new
-    /// Party is created.
+    /// A new unique Id must be generated when
+    /// a new party is created.
     /// </summary>
     public class PartyId
     {

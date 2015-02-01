@@ -4,9 +4,6 @@ using QuickCollab.Collaboration.Messaging;
 
 namespace QuickCollab.Collaboration.Domain.Services
 {
-    /// <summary>
-    /// To do: Dependency on domain event publisher
-    /// </summary>
     public class PartyManagementService : IManagePartyPasses
     {
         private IPartyRepository _repository;
